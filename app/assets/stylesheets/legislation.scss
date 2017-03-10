@@ -8,16 +8,13 @@
 // 01. Hero
 // -----------------
 .brand-heading {
-  background: $brand;
   margin-bottom: 5rem;
+  background: $brand;
   
   .column {
-    padding-top: 10rem;
-    padding-bottom: 10rem;
-    
-    h4 {
-      font-weight: 400;
-      text-align: center;
+    h2 {
+      font-weight: 700;
+      text-align: left;
       color: white;
     }
   }
