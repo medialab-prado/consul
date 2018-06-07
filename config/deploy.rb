@@ -17,9 +17,9 @@ set :repo_url, deploysecret(:repository, 'https://github.com/consul/consul.git')
 
 set :revision, `git rev-parse --short #{fetch(:branch)}`.strip
 
-set :log_level, :info
-set :pty, true
-set :use_sudo, false
+set :log_level, :debug
+# set :pty, true
+# set :use_sudo, false
 
 set :linked_files, %w{config/database.yml config/secrets.yml}
 set :linked_dirs, %w{log tmp public/system public/assets}
@@ -39,6 +39,16 @@ set(:config_files, %w(
 ))
 
 set :whenever_roles, -> { :app }
+
+set :user, deploysecret(:user)
+set :ssh_options, -> {
+  {
+    user: deploysecret(:user),
+    forward_agent: true,
+    compression: 'none',
+    port: deploysecret(:ssh_port)
+  }
+}
 
 namespace :deploy do
   if deploysecret(:use_rvm, true) 
