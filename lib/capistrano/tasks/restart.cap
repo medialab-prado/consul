@@ -1,6 +1,6 @@
 namespace :deploy do
   desc 'Commands for passenger/unicorn application'
-  if File.exist?("/etc/init.d/unicorn_#{deploysecret(:full_app_name)}")
+  if File.exist?("/etc/init.d/unicorn_#{fetch(:full_app_name)}")
     %w(start stop force-stop restart upgrade reopen-logs).each do |command|
       task command.to_sym do
         on roles(:app), in: :sequence, wait: 5 do
