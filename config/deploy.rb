@@ -7,7 +7,11 @@ def deploysecret(key, default = 'undefined')
 end
 
 set :rails_env, fetch(:stage)
-set :rvm1_ruby_version, deploysecret(:ruby_version, '2.3.2') if deploysecret(:use_rvm, true)
+
+if deploysecret(:use_rvm, true)
+  require 'rvm1/capistrano3'
+  set :rvm1_ruby_version, deploysecret(:ruby_version, '2.3.2') 
+end
 
 set :application, 'consul'
 set :full_app_name, deploysecret(:full_app_name)
