@@ -57,14 +57,7 @@ namespace :deploy do
     before :starting, 'install_bundler_gem' # install bundler gem
   end
 
-  if File.exist?("/etc/init.d/unicorn_#{deploysecret(:full_app_name)}")
-    puts "/etc/init.d/unicorn_#{deploysecret(:full_app_name)} found. Trying to restart unicorn server"
-    after :publishing, 'deploy:restart'
-  else
-    puts 'Trying to restart passenger'
-    after :publishing, 'deploy:restart_passenger'
-  end
-
+  after :publishing, 'deploy:restart'
   after :published, 'delayed_job:restart'
   after :published, 'refresh_sitemap'
 
