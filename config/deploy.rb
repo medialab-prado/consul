@@ -57,12 +57,9 @@ namespace :deploy do
     before :starting, 'install_bundler_gem' # install bundler gem
   end
 
-  if deploysecret(:web_server, 'unicorn') == 'unicorn'
+  if File.exist?("/etc/init.d/unicorn_#{fetch(:full_app_name)}")
     after :publishing, 'deploy:restart'
-  end
-
-
-  if deploysecret(:web_server, 'unicorn') == 'passenger'
+  else
     after :publishing, 'deploy:restart_passenger'
   end
 
