@@ -56,7 +56,16 @@ namespace :deploy do
     before :starting, 'rvm1:install:ruby' # install Ruby and create gemset
     before :starting, 'install_bundler_gem' # install bundler gem
   end
-  after :publishing, 'deploy:restart'
+
+  if deploysecret(:server, 'unicorn') == 'unicorn'
+    after :publishing, 'deploy:restart'
+  end
+
+
+  if deploysecret(:server, 'unicorn') == 'passenger'
+    after :publishing, 'deploy:restart_passenger'
+  end
+
   after :published, 'delayed_job:restart'
   after :published, 'refresh_sitemap'
 
