@@ -57,12 +57,12 @@ namespace :deploy do
     before :starting, 'install_bundler_gem' # install bundler gem
   end
 
-  if deploysecret(:server, 'unicorn') == 'unicorn'
+  if deploysecret(:web_server, 'unicorn') == 'unicorn'
     after :publishing, 'deploy:restart'
   end
 
 
-  if deploysecret(:server, 'unicorn') == 'passenger'
+  if deploysecret(:web_server, 'unicorn') == 'passenger'
     after :publishing, 'deploy:restart_passenger'
   end
 
