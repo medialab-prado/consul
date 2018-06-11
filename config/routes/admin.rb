@@ -186,4 +186,6 @@ namespace :admin do
     resources :cards
     resources :feeds, only: [:update]
   end
+
+  resources :proposal_dashboard_actions, only: %i[index new create edit update destroy]
 end

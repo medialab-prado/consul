@@ -194,6 +194,13 @@
       <% end %>
     </li>
 
+    <li class="section-title <%= 'is_active' if controller_name == 'proposal_dashboard_actions' %>">
+      <%= link_to admin_proposal_dashboard_actions_path do %>
+        <span class="icon-edit"></span>
+        <strong><%= ProposalDashboardAction.model_name.human(count: 2) %></strong>
+      <% end %>
+    </li>
+
     <% if feature?(:signature_sheets) %>
       <li class="section-title <%= "is-active" if controller_name == "signature_sheets" %>">
         <%= link_to admin_signature_sheets_path do %>
