@@ -1,16 +1,1 @@
-        <% if @proposal.retired? %>
-          <div id="retired_explanation" class="callout">
-            <h2>
-              <%= t("proposals.show.retired") %>:
-              <%= t("proposals.retire_options.#{@proposal.retired_reason}") unless @proposal.retired_reason == 'other' %>
-            </h2>
-            <%= simple_format text_with_links(@proposal.retired_explanation), {}, sanitize: false %>
-          </div>
-        <% end %>
-d
-        <% if feature?(:allow_attached_documents) %>
-          <%= render 'documents/documents',
-                      documents: @proposal.documents,
-                      max_documents_allowed: Proposal.max_documents_allowed %>
-        <% end %>
-<%= render 'preview', preview: false %>
+<%= render 'proposals/preview', preview: false %>
