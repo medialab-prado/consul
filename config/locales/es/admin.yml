@@ -1050,6 +1050,9 @@ es:
         success: Distrito borrado correctamente
         error: No se puede borrar el distrito porque ya tiene elementos asociados
     proposal_dashboard_actions:
+      action_type:
+        proposed_action: Acción propuesta
+        resource: Recurso
       index:
         create: Crear
         edit: Editar

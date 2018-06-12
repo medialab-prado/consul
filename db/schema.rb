@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180611072816) do
+ActiveRecord::Schema.define(version: 20180612072003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -866,6 +866,7 @@ ActiveRecord::Schema.define(version: 20180611072816) do
     t.integer  "order",                                default: 0
     t.boolean  "active",                               default: true
     t.datetime "hidden_at"
+    t.integer  "action_type",                          default: 0,     null: false
   end
 
   create_table "proposal_notifications", force: :cascade do |t|
