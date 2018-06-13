@@ -5,8 +5,11 @@
 // 03. Show participation
 // 04. List participation
 // 05. Featured
-// 06. Budget
-// 07. Proposals successfull
+// 06. Budgets
+// 07. Proposals successful
+// 08. Polls
+// 09. Polls results and stats
+// 10. Guides
 //
 
 // 01. Votes and supports
@@ -15,18 +18,18 @@
 @mixin votes {
   border-top: 1px solid $border;
   margin-top: $line-height;
-  padding: $line-height 0;
+  padding: $line-height / 2 0;
   position: relative;
 
   @include breakpoint(medium) {
     border-left: 1px solid $border;
     border-top: 0;
     margin-top: 0;
-    padding-top: $line-height*2;
   }
 
-  .icon-like, .icon-unlike {
-    background: white;
+  .icon-like,
+  .icon-unlike {
+    background: #fff;
     border: 2px solid $text-light;
     border-radius: rem-calc(3);
     color: $text-light;
@@ -36,8 +39,9 @@
     padding: rem-calc(3) rem-calc(6);
     position: relative;
 
-    &:hover, &:active {
-      color: white;
+    &:hover,
+    &:active {
+      color: #fff;
       cursor: pointer;
       opacity: 1 !important;
     }
@@ -45,7 +49,8 @@
 
   .icon-like {
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background: $like;
       border: 2px solid $like;
     }
@@ -53,23 +58,25 @@
 
   .icon-unlike {
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background: $unlike;
       border: 2px solid $unlike;
     }
   }
 
-  .like, .unlike {
+  .like,
+  .unlike {
     line-height: rem-calc(48);
     vertical-align: super;
     text-decoration: none;
 
-    span.percentage {
+    .percentage {
       color: $text;
       display: inline-block;
       font-size: $small-font-size;
-      line-height: $line-height*2;
-      padding-right: $line-height/2;
+      line-height: $line-height * 2;
+      padding-right: $line-height / 2;
       vertical-align: top;
 
       @include breakpoint(medium) {
@@ -82,8 +89,9 @@
 
   .voted {
 
-    .icon-like, .icon-unlike {
-      color: white;
+    .icon-like,
+    .icon-unlike {
+      color: #fff;
     }
 
     .icon-like {
@@ -99,15 +107,16 @@
 
   .no-voted {
 
-    .icon-like, .icon-unlike {
-      opacity: .3;
+    .icon-like,
+    .icon-unlike {
+      opacity: 0.3;
     }
   }
 
   .total-votes {
     font-weight: bold;
     float: right;
-    line-height: $line-height*2;
+    line-height: $line-height * 2;
 
     @include breakpoint(medium) {
       display: block;
@@ -136,7 +145,7 @@
       border-bottom-right-radius: rem-calc(3);
       border-top-right-radius: rem-calc(3);
       display: block;
-      height: $line-height/2;
+      height: $line-height / 2;
     }
   }
 
@@ -153,7 +162,7 @@
     color: $text-medium;
 
     &[title] {
-      border-bottom: 1px dotted $text-medium;
+      border-bottom: 0;
     }
   }
 
@@ -164,7 +173,8 @@
     font-size: $small-font-size;
     margin-top: rem-calc(12);
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background: lighten($proposals, 25%);
       cursor: pointer;
     }
@@ -205,10 +215,10 @@
 .participation-not-allowed {
   background: $warning-bg;
   color: $color-warning;
-  height: 100%;
   left: 0;
   line-height: $line-height;
-  padding: $line-height $line-height/2;
+  min-height: 100%;
+  padding: $line-height / 2;
   position: absolute;
   text-align: center;
   top: 0;
@@ -229,8 +239,8 @@
 }
 
 .reply .participation-not-allowed {
-  padding-right: $line-height/2;
-  padding-top: $line-height/6;
+  padding-right: $line-height / 2;
+  padding-top: $line-height / 6;
   text-align: right;
 }
 
@@ -240,55 +250,78 @@
 .debate-form,
 .proposal-form,
 .budget-investment-form,
-.spending-proposal-form {
+.spending-proposal-form,
+.document-form,
+.topic-new,
+.topic-form {
 
-  .icon-debates, .icon-proposals, .icon-budget {
+  .icon-debates,
+  .icon-proposals,
+  .icon-budget,
+  .icon-image {
     font-size: rem-calc(50);
     line-height: $line-height;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   .icon-debates {
     color: $debates;
   }
 
-  .icon-proposals {
+  .icon-proposals,
+  .icon-image {
     color: $proposals;
   }
 
   .icon-budget {
     color: $budget;
   }
+}
 
-  .recommendations {
-    list-style-type: none;
-    margin-left: 0;
-    margin-top: $line-height;
+.recommendations {
+  list-style-type: none;
+  margin-left: 0;
+  margin-top: $line-height;
 
-    li {
-      font-size: $small-font-size;
-      margin: $line-height/2 0;
+  li {
+    font-size: $small-font-size;
+    margin: $line-height / 2 0;
 
-      &:before {
-        content: "l ";
-        font-family: "icons" !important;
-      }
+    &::before {
+      content: 'l ';
+      font-family: "icons" !important;
     }
   }
 }
 
 .debate-form {
 
-  .recommendations li:before {
+  .recommendations li::before {
     color: $debates;
   }
 }
 
-.proposal-form {
+.proposal-form,
+.document-form,
+.topic-form,
+.topic-new {
 
-  .recommendations li:before {
+  .recommendations li::before {
     color: $proposals;
   }
+}
+
+.budget-investment-new,
+.proposal-form,
+.proposal-edit,
+.polls-form,
+.poll-question-form,
+.legislation-process-new,
+.legislation-process-edit,
+.milestone-new,
+.milestone-edit,
+.image-form {
+  @include direct-uploads;
 }
 
 // 03. Show participation
@@ -296,39 +329,60 @@
 
 .debate-show,
 .proposal-show,
+.poll-question-show,
 .investment-project-show,
-.budget-investment-show {
+.budget-investment-show,
+.polls-show,
+.debate-quiz,
+.budget-investment-show,
+.draft-panels,
+.debate-questions,
+.communities-show,
+.topic-show,
+.milestone-content {
 
+  h1,
   p {
     word-wrap: break-word;
   }
 
-  .callout.proposal-retired {
-    font-size: $base-font-size;
+  .callout {
+    &.token-message {
+      background-color: #fff;
+      border-color: $info-border;
+      color: $color-info;
+    }
+
+    &.proposal-retired {
+      font-size: $base-font-size;
+    }
   }
 
   .social-share-full .social-share-button {
-    display:inline;
+    display: inline;
   }
 
-  .whatsapp:before {
+  .whatsapp::before {
     background-color: #43d854;
-    color: white;
-    font-size: 1.7em;
-    margin-left: rem-calc(0.5);
-    padding: rem-calc(9.5) rem-calc(9.8);
-    vertical-align: rem-calc(10);
+    color: #fff;
+    display: inline-block;
+    font-size: rem-calc(30);
+    height: rem-calc(48);
+    padding-top: rem-calc(9);
+    text-align: center;
+    vertical-align: top;
+    width: rem-calc(48);
   }
 
-  .edit-debate, .edit-proposal {
-    margin-bottom: 0;
-  }
-
-  .debate-info, .proposal-info, .investment-project-info, .budget-investment-show {
+  .debate-info,
+  .proposal-info,
+  .investment-project-info,
+  .budget-investment-show,
+  .topic-info {
     clear: both;
     color: $text-medium;
     font-size: $small-font-size;
-    margin-bottom: $line-height/2;
+    margin-bottom: $line-height / 2;
     position: relative;
 
     span:not(.label) {
@@ -346,24 +400,26 @@
     }
   }
 
-  .debate-description, .proposal-description {
+  .debate-description,
+  .proposal-description {
     font-size: rem-calc(15);
     line-height: rem-calc(30);
   }
 
-  ul, ol {
-    margin: rem-calc(12) 0;
+  ul,
+  ol {
 
     li {
       font-size: rem-calc(15);
       margin-bottom: rem-calc(15);
     }
+  }
 
-    &.tags, &.geozone {
+  .tags,
+  .geozone {
 
-      li {
-        margin-bottom: 0;
-      }
+    li {
+      margin-bottom: 0;
     }
   }
 
@@ -379,10 +435,6 @@
 
     a {
       color: $link !important;
-
-      &:hover {
-        color: $link-hover !important;
-      }
     }
   }
 
@@ -399,40 +451,35 @@
   }
 
   blockquote {
+    color: #4c4c4c;
     margin-top: rem-calc(12);
     padding-top: 0;
     font-size: rem-calc(15);
     line-height: rem-calc(30);
   }
 
-  .document-link, .video-link {
-    border: 1px solid $border;
+  .video-link {
+    background: $highlight-soft;
+    border: 1px solid $highlight;
     display: block;
-    margin: $line-height/2 0;
-    padding: $line-height/2;
+    margin: $line-height / 2 0;
+    padding: $line-height / 2;
     position: relative;
 
     a {
-      padding-left: rem-calc(24);
+      word-wrap: break-word;
     }
 
-    :before {
-      color: #007BB7;
-      content: "G";
-      font-family: "icons" !important;
+    .icon-video {
+      color: #cc181e;
+      display: inline-block;
       font-size: rem-calc(24);
-      left: rem-calc(6);
-      padding-top: rem-calc(3);
-      position: absolute;
-      top: 0;
+      line-height: $line-height;
+      vertical-align: middle;
     }
-  }
 
-  .video-link {
-
-    :before {
-      color: #CC181E;
-      content: "D";
+    p {
+      margin-bottom: 0;
     }
   }
 
@@ -447,6 +494,7 @@
 
   .tags {
     display: block;
+    margin-bottom: 0;
 
     a {
       margin-right: rem-calc(6);
@@ -458,14 +506,17 @@
   color: $text;
 }
 
-.investment-project-show p, .budget-investment-show p {
+.investment-project-show p,
+.budget-investment-show p {
   word-break: break-word;
 }
 
-.proposal-show, .investment-project-show, .budget-investment-show {
+.proposal-show,
+.investment-project-show,
+.budget-investment-show {
 
   .supports {
-    padding: $line-height/2 0 0;
+    padding: $line-height / 2 0 0;
   }
 
   .share-supported {
@@ -473,170 +524,329 @@
   }
 }
 
+.tab-milestones ul {
+  margin-top: rem-calc(40);
+  position: relative;
+
+  li {
+    margin: 0 auto;
+    position: relative;
+    width: 0;
+  }
+
+  li::before {
+    background: $budget;
+    border-radius: rem-calc(20);
+    content: '';
+    height: rem-calc(20);
+    position: absolute;
+    top: 5px;
+    transform: translateX(-50%);
+    width: rem-calc(20);
+    z-index: 2;
+  }
+
+  li::after {
+    background: $light-gray;
+    bottom: 100%;
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 25px;
+    width: 1px;
+    z-index: 1;
+  }
+}
+
+.tab-milestones ul .milestone-content {
+  padding: $line-height / 6 $line-height / 2;
+  position: relative;
+
+  h3 {
+    margin-bottom: 0;
+  }
+
+  .milestone-date {
+    color: $text-medium;
+    font-size: $small-font-size;
+  }
+}
+
+.tab-milestones .timeline ul li:nth-child(odd),
+.tab-milestones .timeline ul li:nth-child(even) {
+
+  .milestone-content {
+
+    @include breakpoint(medium) {
+      width: rem-calc(300);
+    }
+
+    @include breakpoint(large) {
+      width: rem-calc(450);
+    }
+  }
+}
+
+.tab-milestones .timeline ul li:nth-child(odd) {
+
+  .milestone-content {
+    text-align: right;
+
+    @include breakpoint(medium) {
+      margin-left: rem-calc(-315);
+    }
+
+    @include breakpoint(large) {
+      margin-left: rem-calc(-465);
+    }
+  }
+}
+
+.tab-milestones .timeline ul li:nth-child(even) {
+
+  .milestone-content {
+    left: 15px;
+  }
+}
+
+.tab-milestones {
+  @include breakpoint(small only) {
+
+    .timeline ul li {
+      width: 100%;
+
+      &:nth-child(odd),
+      &:nth-child(even) {
+
+        .milestone-content {
+          left: 15px;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+.show-actions-menu {
+
+  [class^="icon-"] {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.additional-content {
+
+  .tabs {
+    background: none;
+    border: 0;
+    margin-bottom: 0;
+
+    a {
+      background: none;
+    }
+  }
+
+  .filter-subnav {
+    background: $highlight;
+    margin-bottom: $line-height;
+    padding-top: $line-height / 4;
+  }
+}
+
 // 04. List participation
 // ----------------------
 
-.debates-list, .proposals-list, .investment-projects-list, .budget-investments-list {
+.debates-list,
+.proposals-list,
+.investment-projects-list,
+.budget-investments-list {
 
   @include breakpoint(medium) {
     margin-bottom: rem-calc(48);
   }
 }
 
-.investment-projects-list, .budget-investments-list {
+.investment-projects-list,
+.budget-investments-list {
 
   @include breakpoint(medium) {
-    min-height: $line-height*15;
+    min-height: $line-height * 15;
   }
 }
 
-.debate, .proposal, .investment-project, .budget-investment {
-  margin: $line-height/4 0;
+.budget-investments-list .budget-investment,
+.proposals-list .proposal {
+
+  @include breakpoint(medium) {
+
+    .panel {
+
+      &.with-image {
+        padding: 0 $line-height / 2 0 0;
+      }
+    }
+
+    .column:first-child {
+      overflow: hidden;
+    }
+
+    .column:nth-child(2) {
+      float: left;
+    }
+
+    .column:last-child:not(:first-child) {
+      padding-top: $line-height / 2;
+    }
+
+    img {
+      max-width: 12rem;
+    }
+
+    .budget-investment-content {
+      ul {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.debate,
+.proposal,
+.investment-project,
+.budget-investment,
+.legislation,
+.communities-show {
+  margin: $line-height / 4 0;
 
   .panel {
-    background: white;
+    background: #fff;
     border: 1px solid;
     border-color: #e5e6e9 #dfe0e4 #d0d1d5;
     border-radius: 0;
-    box-shadow: 0px 1px 3px 0 $border;
+    box-shadow: 0 1px 3px 0 $border;
     margin-bottom: rem-calc(12);
     min-height: rem-calc(192);
-    padding: rem-calc(12) rem-calc(12) 0 rem-calc(12);
+    padding: rem-calc(12) rem-calc(12) 0;
 
     @include breakpoint(medium) {
       margin-bottom: rem-calc(-1);
       padding-bottom: rem-calc(12);
     }
 
-    .label-debate, .label-proposal, .label-investment-project, .label-budget-investment {
-      background: none;
-      clear: both;
-      display: block;
-      font-size: rem-calc(12);
-      font-weight: bold;
-      line-height: $line-height;
-      padding-bottom: 0;
-      padding-left: 0;
-      padding-top: 0;
-      text-transform: uppercase;
-    }
-
-    .label-debate {
-      color: $debates;
-    }
-
-    .label-proposal {
-      color: $proposals-dark;
-    }
-
-    .label-investment-project {
-      color: $budget;
-    }
-
-    .label-budget-investment {
-      color: $budget;
+    @include breakpoint(medium) {
+      .divider {
+        display: inline-block;
+      }
     }
 
     h3 {
       font-weight: bold;
-      margin: 0;
+      margin-top: $line-height / 2;
 
       a {
         color: $text;
       }
     }
 
-    .debate-content, .proposal-content, .investment-project-content, .budget-investment-content {
-      margin: 0;
-      min-height: rem-calc(180);
-      position: relative;
+    &.past-budgets {
+      min-height: 0;
+    }
+  }
 
-      .tags {
-        display: block;
-      }
+  .debate-content,
+  .proposal-content,
+  .investment-project-content,
+  .budget-investment-content {
+    margin: 0;
+    min-height: rem-calc(180);
+    position: relative;
+  }
+
+  .tags {
+    display: block;
+    margin-bottom: 0;
+
+    a {
+      font-size: $tiny-font-size;
+    }
+  }
+
+  .icon-debates,
+  .icon-proposals,
+  .icon-budget {
+    font-size: rem-calc(18);
+    line-height: $line-height;
+    margin-left: rem-calc(6);
+    top: 0;
+  }
+
+  .icon-debates {
+    color: $debates;
+  }
+
+  .icon-proposals {
+    color: $proposals-dark;
+  }
+
+  .icon-budget {
+    color: $budget;
+    font-size: $small-font-size;
+  }
+
+  .debate-info,
+  .proposal-info,
+  .investment-project-info,
+  .budget-investment-info,
+  .topic-info {
+    color: $text-medium;
+    font-size: $small-font-size;
+    margin: rem-calc(6) 0 0;
+
+    .icon-comments {
+      font-size: rem-calc(16);
+      vertical-align: top;
     }
 
-    .icon-debates, .icon-proposals, .icon-budget {
-      font-size: rem-calc(18);
-      line-height: $line-height;
-      margin-left: rem-calc(6);
-      top: 0;
-    }
-
-    .icon-debates {
-      color: $debates;
-    }
-
-    .icon-proposals {
-      color: $proposals-dark;
-    }
-
-    .icon-budget {
-      color: $budget;
-      font-size: $small-font-size;
-    }
-
-    .debate-info, .proposal-info, .investment-project-info, .budget-investment-info {
+    a {
       color: $text-medium;
-      font-size: $small-font-size;
-      margin: rem-calc(6) 0 0;
-
-      .icon-comments {
-        font-size: rem-calc(16);
-        vertical-align: top;
-      }
-
-      a {
-        color: $text-medium;
-      }
     }
+  }
 
-    .debate-description, .proposal-description, .investment-project-description, .budget-investment-description {
-      color: $text;
-      font-size: rem-calc(13);
-      height: rem-calc(72);
-      line-height: $line-height;
-      margin-bottom: rem-calc(12);
-      margin-top: 0;
-      overflow: hidden;
-      position: relative;
+  .debate-description,
+  .proposal-description,
+  .investment-project-description,
+  .budget-investment-description {
+    color: $text;
+    font-size: rem-calc(13);
+    height: rem-calc(72);
+    line-height: $line-height;
+    margin-bottom: rem-calc(12);
+    margin-top: 0;
+    overflow: hidden;
+    position: relative;
 
-      a {
-        color: $text;
-      }
-
-      ul, ol {
-
-        li {
-          font-size: rem-calc(13);
-          margin-bottom: rem-calc(12);
-        }
-      }
-    }
-
-    .truncate {
-      background: image-url('truncate.png');
-      background-repeat: repeat-x;
-      bottom: 0;
-      height: 24px;
-      position: absolute;
-      width: 100%;
-    }
-
-    p {
+    a {
       color: $text;
     }
   }
 
-  .divider {
-    display: none;
+  .truncate {
+    background: image-url('truncate.png');
+    background-repeat: repeat-x;
+    bottom: 0;
+    height: rem-calc(24);
+    position: absolute;
+    width: 100%;
   }
 
-  @include breakpoint(medium) {
-    .divider {
-      display: inline-block;
-    }
+  p {
+    color: $text;
   }
+}
+
+.divider {
+  display: none;
 }
 
 .more-info {
@@ -649,24 +859,28 @@
   }
 }
 
-.debate, .debate-show {
+.debate,
+.debate-show,
+.proposal-show,
+.legislation-proposals {
 
   .votes {
     @include votes;
 
-    .against {
-      margin-left: $line-height/4;
-    }
-
     @include breakpoint(medium) {
       text-align: center;
+    }
+
+    .against {
+      margin-left: $line-height / 4;
     }
   }
 }
 
+.proposal-show .votes,
 .debate-show .votes {
   border: 0;
-  padding: $line-height/2 0;
+  padding: $line-height / 2 0;
 }
 
 .proposal {
@@ -676,8 +890,10 @@
   }
 }
 
-.investment-project, .investment-project-show,
-.budget-investment, .budget-investment-show {
+.investment-project,
+.investment-project-show,
+.budget-investment,
+.budget-investment-show {
 
   .supports {
     @include supports;
@@ -692,16 +908,16 @@
 
     .button-support {
       background: $budget;
-      color: white;
+      color: #fff;
 
       &:hover {
         background: $budget-hover;
-        color: white;
+        color: #fff;
         cursor: pointer;
       }
 
       &:active {
-        opacity: .75;
+        opacity: 0.75;
       }
     }
 
@@ -720,6 +936,19 @@
   }
 }
 
+.budget-investment-show {
+
+  figure {
+    margin: rem-calc(10) 0 0;
+    display: inline-block;
+
+    figcaption {
+      font-size: $small-font-size;
+      margin-top: rem-calc(10);
+    }
+  }
+}
+
 .investment-project-show .supports,
 .budget-investment-show .supports {
   border: 0;
@@ -732,12 +961,12 @@
   }
 }
 
-.investment-project .supports .total-supports.no-button,
-.investment-project-show .supports .total-supports.no-button,
-.budget-investment .supports .total-supports.no-button,
-.budget-investment-show .supports .total-supports.no-button {
+.investment-project .no-button,
+.investment-project-show .no-button,
+.budget-investment .no-button,
+.budget-investment-show .no-button {
   display: block;
-  margin-top: $line-height*1.5;
+  margin-top: $line-height * 1.5;
 }
 
 .budget-investment-show {
@@ -765,12 +994,131 @@
   }
 }
 
+.help-header {
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  padding-bottom: $line-height / 2;
+  padding-top: $line-height;
+
+  h1 {
+    font-size: rem-calc(24);
+    text-transform: uppercase;
+  }
+}
+
+.view-mode {
+
+  ul {
+    margin-bottom: 0;
+
+    li {
+      padding: $line-height / 4 0;
+      padding-left: $line-height;
+    }
+  }
+
+  .dropdown-pane {
+    width: auto;
+  }
+
+  .button {
+    background: #eee;
+    height: rem-calc(36);
+    margin-bottom: 0;
+    padding: $line-height / 4;
+    width: rem-calc(36);
+
+    &::before {
+      color: $text;
+      font-family: 'icons';
+    }
+  }
+
+  &.default {
+
+    .button {
+
+      &::before {
+        content: '\51';
+      }
+    }
+  }
+
+  &.minimal {
+
+    .button {
+
+      &::before {
+        content: '\22';
+      }
+    }
+  }
+
+  .view-list {
+    position: relative;
+
+    &::before {
+      content: '\22';
+      font-family: 'icons';
+      left: 0;
+      position: absolute;
+      top: 6px;
+    }
+  }
+
+  .view-card {
+    position: relative;
+
+    &::before {
+      content: '\51';
+      font-family: 'icons';
+      left: 0;
+      position: absolute;
+      top: 6px;
+    }
+  }
+
+  .active {
+    color: $brand;
+
+    &::after {
+      content: '\6c';
+      font-family: 'icons';
+      font-size: $tiny-font-size;
+    }
+  }
+}
+
+.debate,
+.proposal,
+.budget-investment {
+
+  &.minimal {
+
+    .panel,
+    .debate-content,
+    .proposal-content,
+    .budget-investment-content {
+      min-height: 0;
+    }
+
+    .panel h3 {
+      margin: 0 0 $line-height / 2;
+
+      @include breakpoint(medium) {
+        margin: 0;
+      }
+    }
+  }
+}
+
 // 05. Featured
 // ------------
 
-.featured-debates, .featured-proposals,
-.proposals-ballot, .proposals-ballot-list {
-  padding: $line-height/2 0;
+.featured-debates,
+.featured-proposals,
+.enquiries-list {
+  padding: $line-height / 2 0;
 
   @include breakpoint(medium) {
     margin-left: 0 !important;
@@ -792,11 +1140,11 @@
     }
   }
 
-  a, .info {
+  a,
+  .info {
     color: lighten($text, 15%);
     font-size: $small-font-size;
   }
-
 }
 
 .featured-debates {
@@ -807,7 +1155,7 @@
   background: $featured;
 
   .proposal-featured {
-    min-height: $line-height*3.5;
+    min-height: $line-height * 3.5;
   }
 
   .supports {
@@ -817,7 +1165,7 @@
     padding-bottom: 0;
     padding-top: 0;
 
-    &:after {
+    &::after {
       content: none;
     }
 
@@ -831,7 +1179,7 @@
       margin-top: 0;
 
       &:hover {
-        background: white;
+        background: #fff;
         color: $text;
       }
     }
@@ -856,51 +1204,68 @@
       margin-top: 0;
       font-size: $small-font-size;
     }
+  }
 
-    .share-supported {
+  .share-supported {
 
-      .ssb-twitter,
-      .ssb-facebook,
-      .ssb-google_plus {
-        background: none;
-        color: $text;
-        height: rem-calc(33) !important;
+    .ssb-twitter,
+    .ssb-facebook,
+    [class^="ssb-icon ssb-google"] {
+      background: none;
+      color: $text;
+      height: rem-calc(33) !important;
 
 
-        &:before {
-          font-size: rem-calc(18);
-          line-height: rem-calc(33);
-        }
+      &::before {
+        font-size: rem-calc(18);
+        line-height: rem-calc(33);
       }
     }
   }
 }
 
-// 06. Budget
-// ----------
+// 06. Budgets
+// -----------
 
-.expanded.budget {
-  background: $budget;
+.expanded {
 
-  h1, h2, p, a.back, .icon-angle-left {
-    color: white;
-  }
+  &.budget {
+    background: $budget;
 
-  .button {
-    background: white;
-    color: $budget;
-  }
-
-  .info {
-    background: #6A2A72;
-
-    p {
-      margin-bottom: 0;
-      text-transform: uppercase;
+    h1,
+    h2,
+    p,
+    a,
+    .back,
+    .icon-angle-left,
+    .description {
+      color: #fff;
     }
 
-    @include breakpoint(medium) {
-      border-top: rem-calc(6) solid #54225C;
+    a {
+      text-decoration: underline;
+    }
+
+    .callout {
+
+      &.primary a {
+        color: $link;
+      }
+    }
+
+    .button {
+      background: #fff;
+      color: $budget;
+      text-decoration: none;
+    }
+
+    .info {
+      background: #6a2a72;
+
+      p {
+        margin-bottom: 0;
+        text-transform: uppercase;
+      }
     }
   }
 }
@@ -910,15 +1275,26 @@
   border-bottom: 1px solid $budget;
 
   &.budget-heading {
-    min-height: $line-height*10;
+    min-height: $line-height * 10;
   }
 
-  h1 {
+  h2 {
     margin-bottom: 0;
   }
 
-  h1, h2, .back, .icon-angle-left, p, a {
-    color: white;
+  h2,
+  h3,
+  .back,
+  .icon-angle-left,
+  p,
+  a {
+    color: #fff;
+  }
+
+  .tagline {
+    display: block;
+    font-size: $small-font-size;
+    font-weight: normal;
   }
 
   .callout.warning {
@@ -929,50 +1305,64 @@
     }
   }
 
-  &.welcome {
-    background: $budget image-url('spending_proposals_bg.jpg');
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    .spending-proposal-timeline {
-      padding-top: $line-height;
-
-      ul li {
-        margin-right: $line-height;
-        padding-top: $line-height/2;
-
-        .icon-calendar {
-          display: none;
-        }
-      }
-    }
-  }
-
   a {
     text-decoration: underline;
+  }
 
-    &.button {
-      background: white;
-      color: $brand;
-      margin-bottom: rem-calc(3);
-      text-decoration: none;
-    }
+  .button {
+    background: #fff;
+    color: $brand;
+    margin-bottom: rem-calc(3);
+    text-decoration: none;
   }
 
   .social-share-button a {
-    color: white;
+    color: #fff;
 
     &.social-share-button-twitter:hover {
-      color: #40A2D1;
+      color: #40a2d1;
     }
 
     &.social-share-button-facebook:hover {
-      color: #354F88;
+      color: #354f88;
     }
 
-    &.social-share-button-google_plus:hover {
-      color: #CE3E26;
+    &[class^="social-share-button-google"] {
+      color: #ce3e26;
+    }
+
+    &.social-share-button-telegram:hover {
+      color: #ce3e26;
+    }
+  }
+}
+
+.groups-and-headings {
+
+  .heading {
+    border: 1px solid $border;
+    border-radius: rem-calc(3);
+    display: inline-block;
+    margin-bottom: $line-height / 2;
+
+    &:hover {
+      background: $highlight;
+      text-decoration: none;
+    }
+
+    a {
+      display: block;
+      padding: $line-height / 2;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    span {
+      color: $text;
+      display: block;
+      font-size: $small-font-size;
     }
   }
 }
@@ -988,7 +1378,6 @@
   .progress-meter {
     background: #fdcb10;
     border-radius: 0;
-    -webkit-transition: width 2s;
     transition: width 2s;
   }
 
@@ -998,7 +1387,7 @@
   }
 
   .spent-amount-text {
-    color: white;
+    color: #fff;
     font-size: $base-font-size;
     font-weight: normal;
     position: absolute;
@@ -1007,9 +1396,9 @@
     top: 16px;
     width: 100%;
 
-    &:before {
+    &::before {
       color: #a5a1ff;
-      content: "\57";
+      content: '\57';
       font-family: 'icons';
       font-size: $small-font-size;
       position: absolute;
@@ -1019,7 +1408,7 @@
   }
 
   .total-amount {
-    color: white;
+    color: #fff;
     font-size: rem-calc(18);
     font-weight: bold;
     float: right;
@@ -1049,7 +1438,8 @@
 
 .ballot {
 
-  h2, h3 {
+  h2,
+  h3 {
     font-weight: normal;
 
     span {
@@ -1058,19 +1448,22 @@
     }
   }
 
-  h3.subtitle {
-    border-bottom: 3px solid $budget;
+  .ballot-content {
+    border: 2px solid #f9f9f9;
+    border-radius: rem-calc(6);
+    padding: $line-height / 2;
+  }
 
-    span {
-      font-size: $base-font-size;
-      font-weight: normal;
-    }
+  .subtitle {
+    border-left: 2px solid $budget;
+    margin: $line-height / 2 0;
+    padding-left: $line-height / 2;
   }
 
   .amount-spent {
     background: $success-bg;
     font-weight: normal;
-    padding: $line-height/2;
+    padding: $line-height / 2;
 
     span {
       font-size: rem-calc(24);
@@ -1079,15 +1472,15 @@
   }
 }
 
-ul.ballot-list {
+.ballot-list {
   list-style: none;
   margin-left: 0;
 
   li {
     background: #f9f9f9;
     line-height: $line-height;
-    margin-bottom: $line-height/4;
-    padding: $line-height/2;
+    margin-bottom: $line-height / 4;
+    padding: $line-height $line-height / 2;
     position: relative;
 
     a {
@@ -1095,7 +1488,6 @@ ul.ballot-list {
     }
 
     span {
-      color: #9f9f9f;
       display: block;
       font-style: italic;
     }
@@ -1107,7 +1499,7 @@ ul.ballot-list {
       .icon-x {
         color: #9f9f9f;
         font-size: rem-calc(24);
-        line-height: $line-height/2;
+        line-height: $line-height / 2;
         position: absolute;
         right: 6px;
         text-decoration: none;
@@ -1121,16 +1513,17 @@ ul.ballot-list {
 
     &:hover {
       background: $budget;
-      color: white;
+      color: #fff;
 
-      a, span {
-        color: white;
+      a,
+      span {
+        color: #fff;
         outline: 0;
         text-decoration: none;
       }
 
       .remove-investment-project .icon-x {
-        color: white;
+        color: #fff;
       }
     }
   }
@@ -1138,19 +1531,19 @@ ul.ballot-list {
 
 .select-district a {
   display: inline-block;
-  margin: $line-height/4 0;
-  padding: $line-height/4;
+  margin: $line-height / 4 0;
+  padding: $line-height / 4;
 }
 
-.select-district .active a {
+.select-district .is-active a {
   background: #f9f9f9;
   border-radius: rem-calc(3);
   color: $budget;
   font-weight: bold;
 
-  &:after {
-    content: "\56";
-    font-family: "icons";
+  &::after {
+    content: '\56';
+    font-family: 'icons';
     font-size: $small-font-size;
     font-weight: normal;
     line-height: $line-height;
@@ -1170,18 +1563,11 @@ ul.ballot-list {
 
   @include breakpoint(medium) {
     background-color: $budget;
-    -webkit-transition: height 0.3s;
-    -moz-transition: height 0.3s;
     transition: height 0.3s;
 
-    h1 {
-      -webkit-transition: font-size 0.3s;
-      -moz-transition: font-size 0.3s;
-      transition: font-size 0.3s;
-    }
-
     h2 {
-      margin-bottom: 0;
+      margin-bottom: $line-height / 2;
+      transition: font-size 0.3s;
     }
 
     &.is-fixed {
@@ -1192,22 +1578,94 @@ ul.ballot-list {
       top: 0;
       width: 100%;
 
-      h1 {
+      h2 {
         font-size: rem-calc(24);
-        -webkit-transition: font-size 0.3s;
-        -moz-transition: font-size 0.3s;
         transition: font-size 0.3s;
       }
     }
   }
 }
 
-// 07. Proposals successfull
+.budget-timeline {
+  border-left: 3px solid $budget;
+  margin-left: $line-height / 2;
+  padding: $line-height $line-height / 2;
+
+  h3,
+  span,
+  p {
+    padding: 0 $line-height / 4;
+  }
+
+  h3 {
+    margin-bottom: 0;
+  }
+
+  span {
+    color: $text-medium;
+    display: block;
+    font-size: $small-font-size;
+    margin-bottom: $line-height / 2;
+  }
+
+  .phase {
+    position: relative;
+
+    &:not(:first-child) {
+      margin-top: $line-height * 1.5;
+    }
+
+    &::before {
+      background-color: #fff;
+      border: 4px solid $budget;
+      border-radius: 100%;
+      content: '';
+      height: 16px;
+      left: -22px;
+      position: absolute;
+      top: 6px;
+      width: 16px;
+      z-index: 99;
+    }
+
+    &.is-active {
+
+      h3 {
+        background: $budget;
+        color: #fff;
+        display: inline-block;
+      }
+
+      &::before {
+        background-color: $budget;
+      }
+    }
+  }
+}
+
+.budgets-stats {
+
+  .header {
+    background: $highlight;
+  }
+
+  .big-number-stat {
+    font-size: rem-calc(60);
+    font-weight: bold;
+    line-height: rem-calc(60);
+
+    &.budget {
+      color: $budget;
+    }
+  }
+}
+
+// 07. Proposals successful
 // -------------------------
 
 .dark-heading {
-  background: #2D3E50;
-  color: white;
+  background: #2d3e50;
+  color: #fff;
 
   @include breakpoint(medium) {
     padding-bottom: $line-height;
@@ -1216,7 +1674,7 @@ ul.ballot-list {
   p {
 
     &.title {
-      color: #FFD200;
+      color: #ffd200;
     }
 
     &.title-date {
@@ -1230,40 +1688,15 @@ ul.ballot-list {
     padding-top: $line-height;
 
     @include breakpoint(medium) {
-      border-top: rem-calc(6) solid #FFD200;
+      border-top: rem-calc(6) solid #ffd200;
     }
   }
 }
 
-.featured-proposals-ballot-banner {
-  background: #2D3E50 image-url("ballot_tiny.gif") no-repeat;
-  background-position: 75% 0;
-  position: relative;
+.successful .panel {
 
-  h2, a:hover h2 {
-    color: #FFD200 !important;
-  }
-
-  p {
-    color: white;
-  }
-
-  @include breakpoint(medium) {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  @include breakpoint(large) {
-    background: #2D3E50 image-url("ballot.gif") no-repeat;
-    background-position: 90% 0;
-  }
-}
-
-.featured-proposals-ballot-banner,
-.successfull .panel {
-
-  .icon-successfull {
-    border-right: 60px solid #FFD200;
+  .icon-successful {
+    border-right: 60px solid #ffd200;
     border-top: 0;
     border-bottom: 60px solid transparent;
     height: 0;
@@ -1272,9 +1705,9 @@ ul.ballot-list {
     top: 0;
     width: 0;
 
-    &:after {
-      color: #1B254C;
-      content: "\59";
+    &::after {
+      color: #1b254c;
+      content: '\59';
       font-family: "icons" !important;
       left: 34px;
       position: absolute;
@@ -1283,17 +1716,7 @@ ul.ballot-list {
   }
 }
 
-.proposals-ballot-list {
-
-  .proposal-sucessfull {
-    background: white;
-    border-top: 1px solid $border;
-    padding: $line-height 0;
-    position: relative;
-  }
-}
-
-.successfull {
+.successful {
 
   .panel {
     position: relative;
@@ -1311,6 +1734,434 @@ ul.ballot-list {
     @include breakpoint(medium) {
       border-left: 1px solid $border;
       margin: $line-height rem-calc(-25) 0 rem-calc(12);
+    }
+  }
+}
+
+// 08. Polls
+// ----------------------
+
+.polls-show-header {
+  background: #fafafa;
+
+  .callout {
+
+    &.warning a {
+      color: $color-warning;
+    }
+
+    &.primary a {
+      color: $color-info;
+    }
+
+    &.alert a {
+      color: $color-alert;
+    }
+  }
+}
+
+.poll-more-info,
+.poll-more-info-answers {
+  border-top: 1px solid #eee;
+}
+
+.poll-more-info-answers {
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+
+  .column:nth-child(odd) {
+    border-right: 2px solid $text;
+  }
+
+  .answer-divider {
+    border-bottom: 2px solid $text;
+    border-right: 0 !important;
+    margin-bottom: $line-height;
+    padding-bottom: $line-height;
+  }
+
+  .answer-description {
+    height: 100%;
+
+    &.short {
+      height: rem-calc(300);
+      overflow: hidden;
+    }
+  }
+}
+
+.orbit-bullets button {
+  background-color: #ccc;
+  height: $line-height / 2;
+  width: $line-height / 2;
+
+  &.is-active {
+    background-color: $brand;
+  }
+}
+
+.orbit-container {
+  height: 100% !important;
+  max-height: none !important;
+
+  li {
+    margin-bottom: 0 !important;
+  }
+}
+
+.orbit-slide {
+  max-height: none !important;
+
+  img {
+    image-rendering: pixelated;
+  }
+}
+
+.orbit-caption {
+  background: #eee;
+  color: $text;
+}
+
+.orbit-next,
+.orbit-previous {
+  background: rgba(34, 34, 34, 0.25);
+}
+
+.zoom-link {
+  background: #fff;
+  border-radius: rem-calc(48);
+  color: #000;
+  font-size: rem-calc(24);
+  font-weight: bold;
+  height: rem-calc(48);
+  line-height: rem-calc(48);
+  right: 12px;
+  padding-top: rem-calc(4);
+  position: absolute;
+  text-align: center;
+  top: 24px;
+  width: rem-calc(48);
+  z-index: 9;
+
+  &:hover {
+    background: $dark;
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.image-container {
+  background: #fafafa;
+  overflow: hidden;
+  position: relative;
+}
+
+.poll {
+
+  &.with-image {
+
+    @include breakpoint(medium) {
+      padding: 0 $line-height / 2 0 0;
+    }
+
+    img {
+      height: 100%;
+      max-width: none;
+      position: absolute;
+    }
+  }
+}
+
+.poll,
+.poll-question {
+  border: 1px solid $border;
+  margin-bottom: $line-height / 2;
+  padding: $line-height / 2;
+  position: relative;
+
+  .icon-poll-answer {
+    border-top: 0;
+    border-bottom: 60px solid transparent;
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+
+    &.can-answer::after,
+    &.cant-answer::after,
+    &.not-logged-in::after,
+    &.already-answer::after,
+    &.unverified::after {
+      font-family: "icons" !important;
+      left: 34px;
+      position: absolute;
+      top: 5px;
+    }
+
+    &.can-answer {
+      border-right: 60px solid $info-bg;
+
+      &::after {
+        color: $color-info;
+        content: '\6c';
+      }
+    }
+
+    &.cant-answer {
+      border-right: 60px solid $alert-bg;
+
+      &::after {
+        color: $color-alert;
+        content: '\74';
+      }
+    }
+
+    &.not-logged-in {
+      border-right: 60px solid $info-bg;
+
+      &::after {
+        color: $color-info;
+        content: '\6f';
+      }
+    }
+
+    &.unverified {
+      border-right: 60px solid $warning-bg;
+
+      &::after {
+        color: $color-warning;
+        content: '\6f';
+      }
+    }
+
+    &.already-answer {
+      border-right: 60px solid $success-bg;
+
+      &::after {
+        color: $color-success;
+        content: '\59';
+      }
+    }
+  }
+
+  .dates {
+    color: $text-medium;
+    font-size: $small-font-size;
+    margin-bottom: $line-height / 2;
+  }
+
+  h4 {
+    font-size: rem-calc(30);
+    line-height: $line-height * 1.5;
+
+    a {
+      color: $text;
+    }
+  }
+}
+
+.questions-callout {
+  font-size: $base-font-size;
+}
+
+.section-title-divider {
+  border-bottom: 1px solid #eee;
+  color: #000;
+  margin: $line-height 0;
+
+  span {
+    border-bottom: 1px solid #000;
+  }
+}
+
+.poll-question {
+  padding: 0 $line-height;
+
+  h3 {
+    padding-top: $line-height;
+
+    a {
+      color: $text;
+    }
+  }
+}
+
+.poll-question-answers {
+
+  .button {
+    margin-right: $line-height / 4;
+    min-width: rem-calc(168);
+
+    @include breakpoint(medium down) {
+      width: 100%;
+    }
+
+    &.answered {
+      background: #f4f8ec;
+      border: 2px solid #92ba48;
+      color: $text;
+      position: relative;
+
+      &::after {
+        background: #92ba48;
+        border-radius: rem-calc(20);
+        content: '\6c';
+        color: #fff;
+        font-family: "icons" !important;
+        font-size: rem-calc(12);
+        padding: $line-height / 4;
+        position: absolute;
+        right: -6px;
+        top: -6px;
+      }
+    }
+  }
+}
+
+// 09. Polls results and stats
+// ---------------------------
+
+.polls-results-stats {
+
+  .sidebar {
+    border-bottom: 1px solid $border;
+    margin-bottom: $line-height;
+
+    @include breakpoint(medium) {
+      border-bottom: 0;
+      border-right: 1px solid $border;
+    }
+
+    .menu {
+      padding: 0;
+
+      li a {
+        color: $link;
+        line-height: $line-height;
+      }
+    }
+  }
+
+  table {
+    table-layout: fixed;
+
+    caption {
+      padding: $line-height / 2 0;
+      text-align: left;
+    }
+
+    th {
+      text-align: left;
+
+      &.win {
+        background: #009fde;
+      }
+    }
+
+    td {
+
+      &.win {
+        background: #ccedf8;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .number {
+    font-size: rem-calc(60);
+    font-weight: bold;
+    line-height: rem-calc(60);
+  }
+}
+
+// 10. Guides
+// ----------------------
+
+.guides {
+
+  h2 {
+    margin: $line-height 0 $line-height * 2;
+  }
+
+  .guide-budget,
+  .guide-proposal {
+    border-radius: rem-calc(3);
+    margin: $line-height 0;
+    padding: $line-height;
+    position: relative;
+
+    .button {
+      color: $text;
+      font-weight: bold;
+    }
+
+    &::before {
+      border-radius: 100%;
+      color: #fff;
+      font-family: "icons" !important;
+      height: rem-calc(80);
+      left: 50%;
+      line-height: rem-calc(80);
+      margin-left: rem-calc(-40);
+      position: absolute;
+      text-align: center;
+      top: -40px;
+      width: rem-calc(80);
+      z-index: 99;
+    }
+  }
+
+  .guide-budget {
+    border: 1px solid $budget;
+
+    &::before {
+      background: $budget;
+      content: '\53';
+      font-size: rem-calc(40);
+    }
+
+    .button {
+      background: #f8f5f9;
+      border: 1px solid $budget;
+    }
+  }
+
+  .guide-proposal {
+    border: 1px solid $proposals;
+
+    &::before {
+      background: $proposals;
+      content: '\68';
+      font-size: rem-calc(40);
+    }
+
+    .button {
+      background: #fffaf4;
+      border: 1px solid $proposals;
+    }
+  }
+
+  ul {
+
+    @include breakpoint(medium) {
+      min-height: $line-height * 14;
+    }
+
+    li {
+      margin-bottom: $line-height;
+      padding-left: $line-height;
+      position: relative;
+
+      &::before {
+        color: #37af65;
+        content: '\56';
+        font-family: "icons" !important;
+        font-size: $small-font-size;
+        left: 0;
+        position: absolute;
+        top: 1px;
+      }
     }
   }
 }

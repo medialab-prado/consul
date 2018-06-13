@@ -1,5 +1,11 @@
 class Comment < ActiveRecord::Base
   include Flaggable
+  include HasPublicAuthor
+  include Graphqlable
+  include Notifiable
+
+  COMMENTABLE_TYPES = %w(Debate Proposal Budget::Investment Poll Topic Legislation::Question
+                        Legislation::Annotation Legislation::Proposal).freeze
 
   acts_as_paranoid column: :hidden_at
   include ActsAsParanoidAliases
@@ -10,9 +16,11 @@ class Comment < ActiveRecord::Base
 
   validates :body, presence: true
   validates :user, presence: true
-  validates_inclusion_of :commentable_type, in: ["Debate", "Proposal", "Budget::Investment"]
+
+  validates :commentable_type, inclusion: { in: COMMENTABLE_TYPES }
 
   validate :validate_body_length
+  validate :comment_valuation, if: -> { valuation }
 
   belongs_to :commentable, -> { with_hidden }, polymorphic: true, counter_cache: true
   belongs_to :user, -> { with_hidden }
@@ -21,8 +29,19 @@ class Comment < ActiveRecord::Base
 
   scope :for_render, -> { with_hidden.includes(user: :organization) }
   scope :with_visible_author, -> { joins(:user).where("users.hidden_at IS NULL") }
-  scope :not_as_admin_or_moderator, -> { where("administrator_id IS NULL").where("moderator_id IS NULL")}
+  scope :not_as_admin_or_moderator, -> do
+    where("administrator_id IS NULL").where("moderator_id IS NULL")
+  end
   scope :sort_by_flags, -> { order(flags_count: :desc, updated_at: :desc) }
+  scope :public_for_api, -> do
+    not_valuations
+      .where(%{(comments.commentable_type = 'Debate' and comments.commentable_id in (?)) or
+            (comments.commentable_type = 'Proposal' and comments.commentable_id in (?)) or
+            (comments.commentable_type = 'Poll' and comments.commentable_id in (?))},
+          Debate.public_for_api.pluck(:id),
+          Proposal.public_for_api.pluck(:id),
+          Poll.public_for_api.pluck(:id))
+  end
 
   scope :sort_by_most_voted, -> { order(confidence_score: :desc, created_at: :desc) }
   scope :sort_descendants_by_most_voted, -> { order(confidence_score: :desc, created_at: :asc) }
@@ -33,13 +52,16 @@ class Comment < ActiveRecord::Base
   scope :sort_by_oldest, -> { order(created_at: :asc) }
   scope :sort_descendants_by_oldest, -> { order(created_at: :asc) }
 
+  scope :not_valuations, -> { where(valuation: false) }
+
   after_create :call_after_commented
 
-  def self.build(commentable, user, body, p_id=nil)
-    new commentable: commentable,
+  def self.build(commentable, user, body, p_id = nil, valuation = false)
+    new(commentable: commentable,
         user_id:     user.id,
         body:        body,
-        parent_id:   p_id
+        parent_id:   p_id,
+        valuation:   valuation)
   end
 
   def self.find_commentable(c_type, c_id)
@@ -55,7 +77,7 @@ class Comment < ActiveRecord::Base
   end
 
   def author=(author)
-    self.user= author
+    self.user = author
   end
 
   def total_votes
@@ -91,7 +113,7 @@ class Comment < ActiveRecord::Base
   end
 
   def call_after_commented
-    self.commentable.try(:after_commented)
+    commentable.try(:after_commented)
   end
 
   def self.body_max_length
@@ -112,4 +134,9 @@ class Comment < ActiveRecord::Base
       validator.validate(self)
     end
 
+    def comment_valuation
+      unless author.can?(:comment_valuation, commentable)
+        errors.add(:valuation, :cannot_comment_valuation)
+      end
+    end
 end

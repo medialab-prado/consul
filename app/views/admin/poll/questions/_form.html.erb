@@ -1,0 +1,22 @@
+<%= form_for(@question, url: form_url) do |f| %>
+
+  <%= render 'shared/errors', resource: @question %>
+
+  <%= f.hidden_field :proposal_id %>
+
+  <div class="small-12">
+    <div class="small-12 medium-6 large-4">
+      <%= f.select :poll_id,
+                    options_for_select(Poll.pluck(:name, :id)),
+                    prompt: t("admin.questions.index.select_poll"),
+                    label: t("admin.questions.new.poll_label") %>
+    </div>
+
+    <%= f.text_field :title %>
+
+    <div class="small-12 medium-6 large-4 margin-top">
+      <%= f.submit(class: "button expanded", value: t("shared.save")) %>
+    </div>
+  </div>
+
+<% end %>

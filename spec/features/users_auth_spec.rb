@@ -3,43 +3,103 @@ require 'rails_helper'
 feature 'Users' do
 
   context 'Regular authentication' do
-    scenario 'Sign up' do
-      visit '/'
-      click_link 'Register'
+    context 'Sign up' do
 
-      fill_in 'user_username',              with: 'Manuela Carmena'
-      fill_in 'user_email',                 with: 'manuela@consul.dev'
-      fill_in 'user_password',              with: 'judgementday'
-      fill_in 'user_password_confirmation', with: 'judgementday'
-      check 'user_terms_of_service'
+      scenario 'Success' do
+        message = "You have been sent a message containing a verification link. Please click on this link to activate your account."
+        visit '/'
+        click_link 'Register'
 
-      click_button 'Register'
+        fill_in 'user_username',              with: 'Manuela Carmena'
+        fill_in 'user_email',                 with: 'manuela@consul.dev'
+        fill_in 'user_password',              with: 'judgementday'
+        fill_in 'user_password_confirmation', with: 'judgementday'
+        check 'user_terms_of_service'
 
-      expect(page).to have_content "You have been sent a message containing a verification link. Please click on this link to activate your account."
+        click_button 'Register'
 
-      confirm_email
+        expect(page).to have_content message
 
-      expect(page).to have_content "Your account has been confirmed."
+        confirm_email
+
+        expect(page).to have_content "Your account has been confirmed."
+      end
+
+      scenario 'Errors on sign up' do
+        visit '/'
+        click_link 'Register'
+        click_button 'Register'
+
+        expect(page).to have_content error_message
+      end
+
     end
 
-    scenario 'Errors on sign up' do
-      visit '/'
-      click_link 'Register'
-      click_button 'Register'
+    context 'Sign in' do
 
-      expect(page).to have_content error_message
-    end
+      scenario 'sign in with email' do
+        create(:user, email: 'manuela@consul.dev', password: 'judgementday')
 
-    scenario 'Sign in' do
-      create(:user, email: 'manuela@consul.dev', password: 'judgementday')
+        visit '/'
+        click_link 'Sign in'
+        fill_in 'user_login',    with: 'manuela@consul.dev'
+        fill_in 'user_password', with: 'judgementday'
+        click_button 'Enter'
 
-      visit '/'
-      click_link 'Sign in'
-      fill_in 'user_email',    with: 'manuela@consul.dev'
-      fill_in 'user_password', with: 'judgementday'
-      click_button 'Enter'
+        expect(page).to have_content 'You have been signed in successfully.'
+      end
 
-      expect(page).to have_content 'You have been signed in successfully.'
+      scenario 'Sign in with username' do
+        create(:user, username: '👻👽👾🤖', email: 'ash@nostromo.dev', password: 'xenomorph')
+
+        visit '/'
+        click_link 'Sign in'
+        fill_in 'user_login',    with: '👻👽👾🤖'
+        fill_in 'user_password', with: 'xenomorph'
+        click_button 'Enter'
+
+        expect(page).to have_content 'You have been signed in successfully.'
+      end
+
+      scenario 'Avoid username-email collisions' do
+        u1 = create(:user, username: 'Spidey', email: 'peter@nyc.dev', password: 'greatpower')
+        u2 = create(:user, username: 'peter@nyc.dev', email: 'venom@nyc.dev', password: 'symbiote')
+
+        visit '/'
+        click_link 'Sign in'
+        fill_in 'user_login',    with: 'peter@nyc.dev'
+        fill_in 'user_password', with: 'greatpower'
+        click_button 'Enter'
+
+        expect(page).to have_content 'You have been signed in successfully.'
+
+        visit account_path
+
+        expect(page).to have_link 'My activity', href: user_path(u1)
+
+        visit '/'
+        click_link 'Sign out'
+
+        expect(page).to have_content 'You have been signed out successfully.'
+
+        click_link 'Sign in'
+        fill_in 'user_login',    with: 'peter@nyc.dev'
+        fill_in 'user_password', with: 'symbiote'
+        click_button 'Enter'
+
+        expect(page).not_to have_content 'You have been signed in successfully.'
+        expect(page).to have_content 'Invalid login or password.'
+
+        fill_in 'user_login',    with: 'venom@nyc.dev'
+        fill_in 'user_password', with: 'symbiote'
+        click_button 'Enter'
+
+        expect(page).to have_content 'You have been signed in successfully.'
+
+        visit account_path
+
+        expect(page).to have_link 'My activity', href: user_path(u2)
+      end
     end
   end
 
@@ -48,9 +108,17 @@ feature 'Users' do
 
       let(:twitter_hash){ {provider: 'twitter', uid: '12345', info: {name: 'manuela'}} }
       let(:twitter_hash_with_email){ {provider: 'twitter', uid: '12345', info: {name: 'manuela', email: 'manuelacarmena@example.com'}} }
-      let(:twitter_hash_with_verified_email){ {provider: 'twitter',
-                                               uid: '12345',
-                                               info: {name: 'manuela', email: 'manuelacarmena@example.com', verified: '1'}} }
+      let(:twitter_hash_with_verified_email) do
+        {
+          provider: 'twitter',
+          uid: '12345',
+          info: {
+            name: 'manuela',
+            email: 'manuelacarmena@example.com',
+            verified: '1'
+          }
+        }
+      end
 
       scenario 'Sign up when Oauth provider has a verified email' do
         OmniAuth.config.add_mock(:twitter, twitter_hash_with_verified_email)
@@ -77,7 +145,7 @@ feature 'Users' do
 
         click_link 'Sign up with Twitter'
 
-        expect(current_path).to eq(new_user_session_path)
+        expect(page).to have_current_path(new_user_session_path)
         expect(page).to have_content "To continue, please click on the confirmation link that we have sent you via email"
 
         confirm_email
@@ -102,7 +170,7 @@ feature 'Users' do
         click_link 'Register'
         click_link 'Sign up with Twitter'
 
-        expect(current_path).to eq(finish_signup_path)
+        expect(page).to have_current_path(finish_signup_path)
         fill_in 'user_email', with: 'manueladelascarmenas@example.com'
         click_button 'Register'
 
@@ -130,9 +198,8 @@ feature 'Users' do
         click_link 'Register'
         click_link 'Sign up with Twitter'
 
-        expect(current_path).to eq(finish_signup_path)
+        expect(page).to have_current_path(finish_signup_path)
         click_link 'Cancel login'
-
 
         visit '/'
         expect_to_not_be_signed_in
@@ -165,13 +232,13 @@ feature 'Users' do
         click_link 'Register'
         click_link 'Sign up with Twitter'
 
-        expect(current_path).to eq(finish_signup_path)
+        expect(page).to have_current_path(finish_signup_path)
 
         expect(page).to have_field('user_username', with: 'manuela')
 
         click_button 'Register'
 
-        expect(current_path).to eq(do_finish_signup_path)
+        expect(page).to have_current_path(do_finish_signup_path)
 
         fill_in 'user_username', with: 'manuela2'
         click_button 'Register'
@@ -193,12 +260,12 @@ feature 'Users' do
         click_link 'Register'
         click_link 'Sign up with Twitter'
 
-        expect(current_path).to eq(finish_signup_path)
+        expect(page).to have_current_path(finish_signup_path)
 
         fill_in 'user_email', with: 'manuela@example.com'
         click_button 'Register'
 
-        expect(current_path).to eq(do_finish_signup_path)
+        expect(page).to have_current_path(do_finish_signup_path)
 
         fill_in 'user_email', with: 'somethingelse@example.com'
         click_button 'Register'
@@ -228,7 +295,7 @@ feature 'Users' do
         click_link 'Register'
         click_link 'Sign up with Twitter'
 
-        expect(current_path).to eq(finish_signup_path)
+        expect(page).to have_current_path(finish_signup_path)
 
         expect(page).to have_field('user_email', with: 'manuelacarmena@example.com')
         fill_in 'user_email', with: 'somethingelse@example.com'
@@ -310,7 +377,7 @@ feature 'Users' do
     login_as(admin.user)
     visit root_path
 
-    expect(page).to_not have_content "Your password is expired"
+    expect(page).not_to have_content "Your password is expired"
   end
 
   scenario 'Sign in, user with password expired' do
@@ -319,7 +386,7 @@ feature 'Users' do
     login_as(user)
     visit root_path
 
-    expect(page).to_not have_content "Your password is expired"
+    expect(page).not_to have_content "Your password is expired"
   end
 
   scenario 'Admin with password expired trying to use same password' do

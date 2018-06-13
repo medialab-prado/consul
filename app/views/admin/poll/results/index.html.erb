@@ -1,0 +1,18 @@
+<%= render "/admin/poll/polls/poll_header" %>
+
+<div id="poll-resources">
+  <%= render "/admin/poll/polls/subnav" %>
+
+  <h3><%= t("admin.results.index.title") %></h3>
+
+  <% if @partial_results.empty? %>
+    <div class="callout primary margin-top">
+      <%= t("admin.results.index.no_results") %>
+    </div>
+  <% else %>
+    <%= render "recount", resource: @poll %>
+    <%= render "result" %>
+    <%= render "results_by_booth" %>
+    <%= render "show_results", resource: @poll %>
+  <% end %>
+</div>

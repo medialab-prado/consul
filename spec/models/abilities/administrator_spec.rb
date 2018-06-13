@@ -1,8 +1,9 @@
 require 'rails_helper'
 require 'cancan/matchers'
 
-describe "Abilities::Administrator" do
+describe Abilities::Administrator do
   subject(:ability) { Ability.new(user) }
+
   let(:user) { administrator.user }
   let(:administrator) { create(:administrator) }
 
@@ -11,7 +12,17 @@ describe "Abilities::Administrator" do
 
   let(:debate) { create(:debate) }
   let(:comment) { create(:comment) }
-  let(:proposal) { create(:proposal) }
+  let(:proposal) { create(:proposal, author: user) }
+  let(:budget_investment) { create(:budget_investment) }
+  let(:legislation_question) { create(:legislation_question) }
+  let(:poll_question) { create(:poll_question) }
+
+  let(:proposal_document) { build(:document, documentable: proposal, user: proposal.author) }
+  let(:budget_investment_document) { build(:document, documentable: budget_investment) }
+  let(:poll_question_document) { build(:document, documentable: poll_question) }
+
+  let(:proposal_image) { build(:image, imageable: proposal, user: proposal.author) }
+  let(:budget_investment_image) { build(:image, imageable: budget_investment) }
 
   let(:hidden_debate) { create(:debate, :hidden) }
   let(:hidden_comment) { create(:comment, :hidden) }
@@ -50,6 +61,9 @@ describe "Abilities::Administrator" do
   it { should be_able_to(:comment_as_administrator, proposal) }
   it { should_not be_able_to(:comment_as_moderator, proposal) }
 
+  it { should be_able_to(:comment_as_administrator, legislation_question) }
+  it { should_not be_able_to(:comment_as_moderator, legislation_question) }
+
   it { should be_able_to(:manage, Annotation) }
 
   it { should be_able_to(:read, SpendingProposal) }
@@ -59,6 +73,7 @@ describe "Abilities::Administrator" do
 
   it { should be_able_to(:create, Budget) }
   it { should be_able_to(:update, Budget) }
+  it { should be_able_to(:read_results, Budget) }
 
   it { should be_able_to(:create, Budget::ValuatorAssignment) }
 
@@ -68,4 +83,8 @@ describe "Abilities::Administrator" do
   it { should be_able_to(:valuate, create(:budget_investment, budget: create(:budget, phase: 'valuating'))) }
   it { should be_able_to(:valuate, create(:budget_investment, budget: create(:budget, phase: 'finished'))) }
 
+  it { should be_able_to(:destroy, proposal_image) }
+  it { should be_able_to(:destroy, proposal_document) }
+  it { should_not be_able_to(:destroy, budget_investment_image) }
+  it { should_not be_able_to(:destroy, budget_investment_document) }
 end

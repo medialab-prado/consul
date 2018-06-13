@@ -1,14 +1,16 @@
-<% cache [locale_and_user_status, parent_id, commentable_cache_key(commentable)] do %>
+<% valuation = local_assigns.fetch(:valuation, false) %>
+<% cache [locale_and_user_status, parent_id, commentable_cache_key(commentable), valuation] do %>
   <% css_id = parent_or_commentable_dom_id(parent_id, commentable) %>
   <div id="js-comment-form-<%= css_id %>" <%= "style='display:none'".html_safe if toggeable %> class="comment-form">
     <%= form_for Comment.new, remote: true do |f| %>
-      <%= label_tag "comment-body-#{css_id}", t("comments.form.leave_comment") %>
+      <%= label_tag "comment-body-#{css_id}", leave_comment_text(commentable) %>
       <%= f.text_area :body, id: "comment-body-#{css_id}", maxlength: Comment.body_max_length, label: false %>
       <%= f.hidden_field :commentable_type, value: commentable.class.name %>
       <%= f.hidden_field :commentable_id, value: commentable.id %>
       <%= f.hidden_field :parent_id, value: parent_id %>
+      <%= f.hidden_field :valuation, value: valuation %>
 
-      <%= f.submit comment_button_text(parent_id), class: "button" %>
+      <%= f.submit comment_button_text(parent_id, commentable), class: "button", id: "publish_comment" %>
 
       <% if can? :comment_as_moderator, commentable %>
         <div class="float-right">

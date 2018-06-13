@@ -41,7 +41,7 @@ describe User do
       flagged = user.comment_flags([comment1, comment2, comment3])
 
       expect(flagged[comment1.id]).to be
-      expect(flagged[comment2.id]).to_not be
+      expect(flagged[comment2.id]).not_to be
       expect(flagged[comment3.id]).to be
     end
   end
@@ -55,7 +55,7 @@ describe User do
   describe "#terms" do
     it "is not valid without accepting the terms of service" do
       subject.terms_of_service = nil
-      expect(subject).to_not be_valid
+      expect(subject).not_to be_valid
     end
   end
 
@@ -65,39 +65,46 @@ describe User do
     end
   end
 
+  describe "#age" do
+    it "is the rounded integer age based on the date_of_birth" do
+      user = create(:user, date_of_birth: 33.years.ago)
+      expect(user.age).to eq(33)
+    end
+  end
+
   describe 'preferences' do
     describe 'email_on_comment' do
-      it 'should be false by default' do
+      it 'is false by default' do
         expect(subject.email_on_comment).to eq(false)
       end
     end
 
     describe 'email_on_comment_reply' do
-      it 'should be false by default' do
+      it 'is false by default' do
         expect(subject.email_on_comment_reply).to eq(false)
       end
     end
 
     describe 'subscription_to_website_newsletter' do
-      it 'should be true by default' do
+      it 'is true by default' do
         expect(subject.newsletter).to eq(true)
       end
     end
 
     describe 'email_digest' do
-      it 'should be true by default' do
+      it 'is true by default' do
         expect(subject.email_digest).to eq(true)
       end
     end
 
     describe 'email_on_direct_message' do
-      it 'should be true by default' do
+      it 'is true by default' do
         expect(subject.email_on_direct_message).to eq(true)
       end
     end
 
     describe 'official_position_badge' do
-      it 'should be false by default' do
+      it 'is false by default' do
         expect(subject.official_position_badge).to eq(false)
       end
     end
@@ -151,13 +158,25 @@ describe User do
     end
   end
 
+  describe "poll_officer?" do
+    it "is false when the user is not a poll officer" do
+      expect(subject.poll_officer?).to be false
+    end
+
+    it "is true when the user is a poll officer" do
+      subject.save
+      create(:poll_officer, user: subject)
+      expect(subject.poll_officer?).to be true
+    end
+  end
+
   describe "organization?" do
     it "is false when the user is not an organization" do
       expect(subject.organization?).to be false
     end
 
     describe 'when it is an organization' do
-      before(:each) { create(:organization, user: subject) }
+      before { create(:organization, user: subject) }
 
       it "is true when the user is an organization" do
         expect(subject.organization?).to be true
@@ -171,14 +190,14 @@ describe User do
 
   describe "verified_organization?" do
     it "is falsy when the user is not an organization" do
-      expect(subject).to_not be_verified_organization
+      expect(subject).not_to be_verified_organization
     end
 
     describe 'when it is an organization' do
-      before(:each) { create(:organization, user: subject) }
+      before { create(:organization, user: subject) }
 
       it "is false when the user is not a verified organization" do
-        expect(subject).to_not be_verified_organization
+        expect(subject).not_to be_verified_organization
       end
 
       it "is true when the user is a verified organization" do
@@ -189,7 +208,7 @@ describe User do
   end
 
   describe "organization_attributes" do
-    before(:each) { subject.organization_attributes = {name: 'org', responsible_name: 'julia'} }
+    before { subject.organization_attributes = {name: 'org', responsible_name: 'julia'} }
 
     it "triggers the creation of an associated organization" do
       expect(subject.organization).to be
@@ -201,8 +220,8 @@ describe User do
       subject.username = nil
       expect(subject).to be_valid
 
-      subject.organization.name= nil
-      expect(subject).to_not be_valid
+      subject.organization.name = nil
+      expect(subject).not_to be_valid
     end
   end
 
@@ -259,7 +278,7 @@ describe User do
       create(:user, official_position: "Manager", official_level: 5)
       2.times { create(:user) }
 
-      officials = User.officials
+      officials = described_class.officials
       expect(officials.size).to eq(4)
       officials.each do |user|
         expect(user.official_level).to be > 0
@@ -334,9 +353,9 @@ describe User do
         user2 = create(:user, erased_at: nil)
         user3 = create(:user, erased_at: Time.current)
 
-        expect(User.active).to include(user1)
-        expect(User.active).to include(user2)
-        expect(User.active).to_not include(user3)
+        expect(described_class.active).to include(user1)
+        expect(described_class.active).to include(user2)
+        expect(described_class.active).not_to include(user3)
       end
 
       it "returns users that have not been blocked" do
@@ -345,9 +364,23 @@ describe User do
         user3 = create(:user)
         user3.block
 
-        expect(User.active).to include(user1)
-        expect(User.active).to include(user2)
-        expect(User.active).to_not include(user3)
+        expect(described_class.active).to include(user1)
+        expect(described_class.active).to include(user2)
+        expect(described_class.active).not_to include(user3)
+      end
+
+    end
+
+    describe "erased" do
+
+      it "returns users that have been erased" do
+        user1 = create(:user, erased_at: Time.current)
+        user2 = create(:user, erased_at: Time.current)
+        user3 = create(:user, erased_at: nil)
+
+        expect(described_class.erased).to include(user1)
+        expect(described_class.erased).to include(user2)
+        expect(described_class.erased).not_to include(user3)
       end
 
     end
@@ -357,7 +390,7 @@ describe User do
     it "find users by email" do
       user1 = create(:user, email: "larry@consul.dev")
       create(:user, email: "bird@consul.dev")
-      search = User.search("larry@consul.dev")
+      search = described_class.search("larry@consul.dev")
       expect(search.size).to eq(1)
       expect(search.first).to eq(user1)
     end
@@ -365,13 +398,13 @@ describe User do
     it "find users by name" do
       user1 = create(:user, username: "Larry Bird")
       create(:user, username: "Robert Parish")
-      search = User.search("larry")
+      search = described_class.search("larry")
       expect(search.size).to eq(1)
       expect(search.first).to eq(user1)
     end
 
     it "returns no results if no search term provided" do
-      expect(User.search("    ").size).to eq(0)
+      expect(described_class.search("    ").size).to eq(0)
     end
   end
 
@@ -382,17 +415,17 @@ describe User do
   describe "cache" do
     let(:user) { create(:user) }
 
-    it "should expire cache with becoming a moderator" do
+    it "expires cache with becoming a moderator" do
       expect { create(:moderator, user: user) }
       .to change { user.updated_at}
     end
 
-    it "should expire cache with becoming an admin" do
+    it "expires cache with becoming an admin" do
       expect { create(:administrator, user: user) }
       .to change { user.updated_at}
     end
 
-    it "should expire cache with becoming a veridied organization" do
+    it "expires cache with becoming a veridied organization" do
       create(:organization, user: user)
       expect { user.organization.verify }
       .to change { user.reload.updated_at}
@@ -400,14 +433,14 @@ describe User do
   end
 
   describe "document_number" do
-    it "should upcase document number" do
-      user = User.new({document_number: "x1234567z"})
+    it "upcases document number" do
+      user = described_class.new(document_number: "x1234567z")
       user.valid?
       expect(user.document_number).to eq("X1234567Z")
     end
 
-    it "should remove all characters except numbers and letters" do
-      user = User.new({document_number: " 12.345.678 - B"})
+    it "removes all characters except numbers and letters" do
+      user = described_class.new(document_number: " 12.345.678 - B")
       user.valid?
       expect(user.document_number).to eq("12345678B")
     end
@@ -464,7 +497,186 @@ describe User do
 
       user.erase('an identity test')
 
-      expect(Identity.exists?(identity.id)).to_not be
+      expect(Identity.exists?(identity.id)).not_to be
+    end
+
+  end
+
+  describe "#take_votes_from" do
+    it "logs info of previous users" do
+      user = create(:user, :level_three)
+      other_user = create(:user, :level_three)
+      another_user = create(:user)
+
+      expect(user.former_users_data_log).to be_blank
+
+      user.take_votes_from other_user
+
+      expect(user.former_users_data_log).to include("id: #{other_user.id}")
+
+      user.take_votes_from another_user
+
+      expect(user.former_users_data_log).to include("id: #{other_user.id}")
+      expect(user.former_users_data_log).to include("| id: #{another_user.id}")
+    end
+
+    it "reassigns votes from other user" do
+      other_user = create(:user, :level_three)
+      user = create(:user, :level_three)
+
+      v1 = create(:vote, voter: other_user, votable: create(:debate))
+      v2 = create(:vote, voter: other_user, votable: create(:proposal))
+      v3 = create(:vote, voter: other_user, votable: create(:comment))
+
+      create(:vote)
+
+      expect(other_user.votes.count).to eq(3)
+      expect(user.votes.count).to eq(0)
+
+      user.take_votes_from other_user
+
+      expect(other_user.votes.count).to eq(0)
+      expect(user.vote_ids.sort).to eq([v1.id, v2.id, v3.id].sort)
+    end
+
+    it "reassigns budget ballots from other user" do
+      other_user = create(:user, :level_three)
+      user = create(:user, :level_three)
+
+      b1 = create(:budget_ballot, user: other_user)
+      b2 = create(:budget_ballot, user: other_user)
+
+      create(:budget_ballot)
+
+      expect(Budget::Ballot.where(user: other_user).count).to eq(2)
+      expect(Budget::Ballot.where(user: user).count).to eq(0)
+
+      user.take_votes_from other_user
+
+      expect(Budget::Ballot.where(user: other_user).count).to eq(0)
+      expect(Budget::Ballot.where(user: user).sort).to eq([b1, b2].sort)
+    end
+
+    it "reassigns poll voters from other user" do
+      other_user = create(:user, :level_three)
+      user = create(:user, :level_three)
+
+      v1 = create(:poll_voter, user: other_user)
+      v2 = create(:poll_voter, user: other_user)
+
+      create(:poll_voter)
+
+      expect(Poll::Voter.where(user: other_user).count).to eq(2)
+      expect(Poll::Voter.where(user: user).count).to eq(0)
+
+      user.take_votes_from other_user
+
+      expect(Poll::Voter.where(user: other_user).count).to eq(0)
+      expect(Poll::Voter.where(user: user).sort).to eq([v1, v2].sort)
+    end
+  end
+
+  describe "#take_votes_if_erased_document" do
+    it "does nothing if no erased user with received document" do
+      user_1 = create(:user, :level_three)
+      user_2 = create(:user, :level_three)
+
+      create(:vote, voter: user_1)
+      create(:budget_ballot, user: user_1)
+      create(:poll_voter, user: user_1)
+
+      user_2.take_votes_if_erased_document(111, 1)
+
+      expect(user_1.votes.count).to eq(1)
+      expect(user_2.votes.count).to eq(0)
+
+      expect(Budget::Ballot.where(user: user_1).count).to eq(1)
+      expect(Budget::Ballot.where(user: user_2).count).to eq(0)
+
+      expect(Poll::Voter.where(user: user_1).count).to eq(1)
+      expect(Poll::Voter.where(user: user_2).count).to eq(0)
+    end
+
+    it "takes votes from erased user with received document" do
+      user_1 = create(:user, :level_two, document_number: "12345777", document_type: "1")
+      user_2 = create(:user)
+
+      create(:vote, voter: user_1)
+      create(:budget_ballot, user: user_1)
+      create(:poll_voter, user: user_1)
+
+      user_1.erase
+
+      user_2.take_votes_if_erased_document("12345777", "1")
+
+      expect(user_1.votes.count).to eq(0)
+      expect(user_2.votes.count).to eq(1)
+
+      expect(Budget::Ballot.where(user: user_1).count).to eq(0)
+      expect(Budget::Ballot.where(user: user_2).count).to eq(1)
+
+      expect(Poll::Voter.where(user: user_1).count).to eq(0)
+      expect(Poll::Voter.where(user: user_2).count).to eq(1)
+    end
+
+    it "removes document from erased user and logs info" do
+      user_1 = create(:user, document_number: "12345777", document_type: "1")
+      user_2 = create(:user)
+      user_1.erase
+
+      user_2.take_votes_if_erased_document("12345777", "1")
+
+      expect(user_2.reload.former_users_data_log).to include("id: #{user_1.id}")
+      expect(user_1.reload.document_number).to be_blank
+    end
+
+  end
+
+  describe "email_required?" do
+    it "is true for regular users" do
+      expect(subject.email_required?).to eq(true)
+      expect(create(:user, :hidden).email_required?).to eq(true)
+    end
+
+    it "is false for erased users" do
+      user = create(:user)
+      user.erase
+      user.reload
+
+      expect(user.email_required?).to eq(false)
+    end
+
+    it "is false for verified users with no email" do
+      user = create(:user,
+                     username: "Lois",
+                     email: "",
+                     verified_at: Time.current)
+
+      expect(user).to be_valid
+      expect(user.email_required?).to eq(false)
+    end
+  end
+
+  describe "#interests" do
+    let(:user) { create(:user) }
+
+    it "returns followed object tags" do
+      proposal = create(:proposal, tag_list: "Sport")
+      create(:follow, followable: proposal, user: user)
+
+      expect(user.interests).to eq ["Sport"]
+    end
+
+    it "discards followed objects duplicated tags" do
+      proposal1 = create(:proposal, tag_list: "Sport")
+      proposal2 = create(:proposal, tag_list: "Sport")
+      budget_investment = create(:budget_investment, tag_list: "Sport")
+
+      create(:follow, followable: proposal1, user: user)
+      create(:follow, followable: proposal2, user: user)
+      create(:follow, followable: budget_investment, user: user)
+
+      expect(user.interests).to eq ["Sport"]
     end
 
   end

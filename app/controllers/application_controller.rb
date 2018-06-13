@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 
   layout :set_layout
   respond_to :html
+  helper_method :current_budget
 
   private
 
@@ -113,5 +114,15 @@ class ApplicationController < ActionController::Base
       if !devise_controller? && controller_name != 'welcome' && is_navigational_format?
         store_location_for(:user, request.path)
       end
+    end
+
+    def set_default_budget_filter
+      if @budget.try(:balloting?) || @budget.try(:publishing_prices?)
+        params[:filter] ||= "selected"
+      end
+    end
+
+    def current_budget
+      Budget.current
     end
 end

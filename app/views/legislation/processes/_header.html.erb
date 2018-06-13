@@ -1,0 +1,39 @@
+<div class="legislation-hero jumbo">
+  <div class="row">
+    <div class="small-12 medium-9 column">
+      <%= back_link_to legislation_processes_path %>
+      <h2><%= @process.title %></h2>
+
+      <% if header == :small %>
+        <div id="legislation_info" class="is-hidden" data-toggler=".is-hidden">
+
+          <% if @process.description.present? %>
+            <p class="title"><%= t("legislation.processes.header.description") %></p>
+            <%= markdown @process.description %>
+          <% end %>
+
+          <% if @process.additional_info.present? %>
+            <hr>
+            <p class="title"><%= t("legislation.processes.header.additional_info") %></p>
+            <%= markdown @process.additional_info if @process.additional_info %>
+          <% end %>
+        </div>
+
+        <a class="button" data-toggle="legislation_info">
+          <%= t("legislation.processes.header.more_info") %>
+        </a>
+      <% else %>
+        <%= render 'legislation/processes/header_full', process: @process %>
+      <% end %>
+    </div>
+
+    <aside class="small-12 medium-3 column">
+      <%= render partial: 'shared/social_share', locals: {
+        share_title: t("proposals.show.share"),
+        title: @process.title,
+        url: legislation_process_url(@process),
+        description: @process.title
+      } %>
+    </aside>
+  </div>
+</div>

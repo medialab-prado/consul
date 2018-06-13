@@ -1,19 +1,25 @@
 module CommentableActions
   extend ActiveSupport::Concern
   include Polymorphic
+  include Search
 
   def index
-    @resources = @search_terms.present? ? resource_model.search(@search_terms) : resource_model.all
-    @resources = @advanced_search_terms.present? ? @resources.filter(@advanced_search_terms) : @resources
+    @resources = resource_model.all
 
+    @resources = @current_order == "recommendations" && current_user.present? ? @resources.recommendations(current_user) : @resources.for_render
+    @resources = @resources.search(@search_terms) if @search_terms.present?
+    @resources = @advanced_search_terms.present? ? @resources.filter(@advanced_search_terms) : @resources
     @resources = @resources.tagged_with(@tag_filter) if @tag_filter
-    @resources = @resources.page(params[:page]).for_render.send("sort_by_#{@current_order}")
+
+    @resources = @resources.page(params[:page]).send("sort_by_#{@current_order}")
+
     index_customization if index_customization.present?
 
     @tag_cloud = tag_cloud
     @banners = Banner.with_active
 
     set_resource_votes(@resources)
+
     set_resources_instance
   end
 
@@ -33,7 +39,7 @@ module CommentableActions
 
   def suggest
     @limit = 5
-    @resources = @search_terms.present? ? resource_model.search(@search_terms) : nil
+    @resources = @search_terms.present? ? resource_relation.search(@search_terms) : nil
   end
 
   def create
@@ -56,8 +62,7 @@ module CommentableActions
   end
 
   def update
-    resource.assign_attributes(strong_params)
-    if resource.save
+    if resource.update(strong_params)
       redirect_to resource, notice: t("flash.actions.update.#{resource_name.underscore}")
     else
       load_categories
@@ -87,63 +92,17 @@ module CommentableActions
     end
 
     def set_geozone
-      @resource.geozone = Geozone.find(params[resource_name.to_sym].try(:[], :geozone_id)) if params[resource_name.to_sym].try(:[], :geozone_id).present?
+      geozone_id = params[resource_name.to_sym].try(:[], :geozone_id)
+      @resource.geozone = Geozone.find(geozone_id) if geozone_id.present?
     end
 
     def load_categories
-      @categories = ActsAsTaggableOn::Tag.where("kind = 'category'").order(:name)
+      @categories = ActsAsTaggableOn::Tag.category.order(:name)
     end
 
     def parse_tag_filter
       if params[:tag].present?
         @tag_filter = params[:tag] if ActsAsTaggableOn::Tag.named(params[:tag]).exists?
-      end
-    end
-
-    def parse_search_terms
-      @search_terms = params[:search] if params[:search].present?
-    end
-
-    def parse_advanced_search_terms
-      @advanced_search_terms = params[:advanced_search] if params[:advanced_search].present?
-      parse_search_date
-    end
-
-    def parse_search_date
-      return unless search_by_date?
-      params[:advanced_search][:date_range] = search_date_range
-    end
-
-    def search_by_date?
-      params[:advanced_search] && params[:advanced_search][:date_min].present?
-    end
-
-    def search_start_date
-      case params[:advanced_search][:date_min]
-      when '1'
-        24.hours.ago
-      when '2'
-        1.week.ago
-      when '3'
-        1.month.ago
-      when '4'
-        1.year.ago
-      else
-        Date.parse(params[:advanced_search][:date_min]) rescue 100.years.ago
-      end
-    end
-
-    def search_finish_date
-      (params[:advanced_search][:date_max].to_date rescue Date.today) || Date.today
-    end
-
-    def search_date_range
-      [100.years.ago, search_start_date].max.beginning_of_day..[search_finish_date, Date.today].min.end_of_day
-    end
-
-    def set_search_order
-      if params[:search].present? && params[:order].blank?
-        params[:order] = 'relevance'
       end
     end
 

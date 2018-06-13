@@ -1,105 +1,99 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.8'
-# Use PostgreSQL
-gem 'pg', '~> 0.19.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0', '>= 5.0.4'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '~> 3.1.6'
-# Use CoffeeScript for .coffee assets and views
+gem 'rails', '4.2.10'
+
+gem 'acts-as-taggable-on', '~> 5.0.0'
+gem 'acts_as_votable', '~> 0.11.1'
+gem 'ahoy_matey', '~> 1.6.0'
+gem 'ancestry', '~> 3.0.1'
+gem 'autoprefixer-rails', '~> 8.2.0'
+gem 'browser', '~> 2.5.2'
+gem 'cancancan', '~> 2.1.2'
+gem 'ckeditor', '~> 4.2.3'
+gem 'cocoon', '~> 1.2.9'
 gem 'coffee-rails', '~> 4.2.1'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 4.2.2'
-gem 'jquery-ui-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
-# Fix sprockets on the
-gem 'sprockets', '~> 3.7.1'
-
-gem 'devise', '~> 3.5.7'
-gem 'devise_security_extension'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-gem 'omniauth'
-gem 'omniauth-twitter'
-gem 'omniauth-facebook', '~> 3.0.0'
-gem 'omniauth-google-oauth2', '~> 0.4.0'
-
-gem 'kaminari'
-gem 'ancestry', '~> 2.2.2'
-gem 'acts-as-taggable-on'
-gem 'responders', '~> 2.3.0'
-gem 'foundation-rails', '~> 6.2.4.0'
-gem 'foundation_rails_helper', '~> 2.0.0'
-gem 'acts_as_votable'
-gem 'ckeditor', '~> 4.2.2'
-gem 'invisible_captcha', '~> 0.9.2'
-gem 'cancancan', '~> 1.16.0'
-gem 'social-share-button'
-gem 'initialjs-rails', '0.2.0.4'
-gem 'unicorn', '~> 5.2.0'
-gem 'paranoia', '~> 2.2.1'
-gem 'rinku', '~> 2.0.2', require: 'rails_rinku'
-gem 'savon'
-gem 'dalli'
-gem 'rollbar', '~> 2.14.0'
+gem 'daemons', '~> 1.2.4'
+gem 'dalli', '~> 2.7.6'
 gem 'delayed_job_active_record', '~> 4.1.0'
-gem 'daemons'
-gem 'devise-async'
-gem 'newrelic_rpm', '~> 3.18.1.330'
-gem 'whenever', require: false
-gem 'pg_search'
-gem 'sitemap_generator', '~> 5.3.1'
-
-gem 'ahoy_matey', '~> 1.5.3'
-gem 'groupdate', '~> 3.2.0' # group temporary data
-gem 'tolk', '~> 2.0.0' # Web interface for translations
-
-gem 'browser'
-gem 'turnout', '~> 2.4.0'
+gem 'devise', '~> 3.5.7'
+gem 'devise-async', '~> 0.10.2'
+gem 'devise_security_extension', '~> 0.10.0'
+gem 'foundation-rails', '~> 6.4.3.0'
+gem 'foundation_rails_helper', '~> 2.0.0'
+gem 'graphiql-rails', '~> 1.4.1'
+gem 'graphql', '~> 1.7.8'
+gem 'groupdate', '~> 3.2.0'
+gem 'initialjs-rails', '~> 0.2.0.5'
+gem 'invisible_captcha', '~> 0.10.0'
+gem 'jquery-fileupload-rails'
+gem 'jquery-rails', '~> 4.3.1'
+gem 'jquery-ui-rails', '~> 6.0.1'
+gem 'kaminari', '~> 1.1.1'
+gem 'newrelic_rpm', '~> 4.1.0.333'
+gem 'omniauth', '~> 1.8.1'
+gem 'omniauth-facebook', '~> 4.0.0'
+gem 'omniauth-google-oauth2', '~> 0.4.0'
+gem 'omniauth-twitter', '~> 1.4.0'
+gem 'paperclip', '~> 5.2.1'
+gem 'paranoia', '~> 2.4.0'
+gem 'pg', '~> 0.21.0'
+gem 'pg_search', '~> 2.0.1'
 gem 'redcarpet', '~> 3.4.0'
+gem 'responders', '~> 2.4.0'
+gem 'rinku', '~> 2.0.2', require: 'rails_rinku'
+gem 'rollbar', '~> 2.15.5'
+gem 'sass-rails', '~> 5.0', '>= 5.0.4'
+gem 'savon', '~> 2.11.1'
+gem 'sitemap_generator', '~> 6.0.1'
+gem 'social-share-button', '~> 1.1'
+gem 'sprockets', '~> 3.7.1'
+gem 'turbolinks', '~> 2.5.3'
+gem 'turnout', '~> 2.4.0'
+gem 'uglifier', '~> 4.1.2'
+gem 'unicorn', '~> 5.4.0'
+gem 'whenever', '~> 0.10.0', require: false
+gem 'globalize', '~> 5.0.0'
+gem 'globalize-accessors', '~> 0.2.1'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-leaflet'
+  gem 'rails-assets-markdown-it', '~> 8.2.1'
+end
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-commands-rspec'
-  gem 'rspec-rails', '~> 3.5'
-  gem 'capybara', '~> 2.12.1'
-  gem 'factory_girl_rails', '~> 4.8.0'
-  gem 'fuubar'
-  gem 'launchy'
-  gem 'quiet_assets'
-  gem 'letter_opener_web', '~> 1.3.1'
-  gem 'i18n-tasks', '~> 0.9.12'
-  gem 'capistrano', '~> 3.7.2',           require: false
-  gem 'capistrano-bundler', '~> 1.2',  require: false
-  gem "capistrano-rails", '~> 1.2.3',     require: false
-  gem 'rvm1-capistrano3',              require: false
-  gem 'capistrano3-delayed-job', '~> 1.7.3'
-  gem "bullet", '~> 5.5.1'
-  gem "faker", '~> 1.7.3'
-  gem 'rubocop', '~> 0.47.1', require: false
-  gem 'knapsack'
+  gem 'bullet', '~> 5.7.0'
+  gem 'byebug', '~> 10.0.0'
+  gem 'factory_bot_rails', '~> 4.8.2'
+  gem 'faker', '~> 1.8.7'
+  gem 'i18n-tasks', '~> 0.9.20'
+  gem 'knapsack_pro', '~> 0.53.0'
+  gem 'launchy', '~> 2.4.3'
+  gem 'letter_opener_web', '~> 1.3.2'
+  gem 'quiet_assets', '~> 1.1.0'
+  gem 'spring', '~> 2.0.1'
+  gem 'spring-commands-rspec', '~> 1.0.4'
 end
 
 group :test do
-  gem 'database_cleaner'
-  gem 'poltergeist', '~> 1.13.0'
-  gem 'coveralls', '~> 0.8.19', require: false
-  gem 'email_spec'
+  gem 'capybara', '~> 2.17.0'
+  gem 'coveralls', '~> 0.8.21', require: false
+  gem 'database_cleaner', '~> 1.6.1'
+  gem 'email_spec', '~> 2.1.0'
+  gem 'rspec-rails', '~> 3.6'
+  gem 'selenium-webdriver', '~> 3.10'
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '3.3.0'
+  gem 'capistrano', '~> 3.10.1', require: false
+  gem 'capistrano-bundler', '~> 1.2', require: false
+  gem 'capistrano-rails', '~> 1.3.1', require: false
+  gem 'capistrano3-delayed-job', '~> 1.7.3'
+  gem 'mdl', '~> 0.4.0', require: false
+  gem 'rubocop', '~> 0.54.0', require: false
+  gem 'rubocop-rspec', '~> 1.24.0', require: false
+  gem 'rvm1-capistrano3', '~> 1.4.0', require: false
+  gem 'scss_lint', '~> 0.54.0', require: false
+  gem 'web-console', '~> 3.3.0'
 end
 
 eval_gemfile './Gemfile_custom'

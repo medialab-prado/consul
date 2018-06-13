@@ -1,0 +1,16 @@
+<% if @process.description.present? %>
+  <p class="title"><%= t("legislation.processes.header.description") %></p>
+  <%= markdown @process.description %>
+<% end %>
+
+<% if @process.additional_info.present? %>
+  <div id="additional_info" class="is-hidden" data-toggler=".is-hidden">
+    <hr>
+    <p class="title"><%= t("legislation.processes.header.additional_info") %></p>
+    <%= markdown @process.additional_info if @process.additional_info %>
+  </div>
+
+  <a class="button" data-toggle="additional_info">
+    <%= t("legislation.processes.header.additional_info") %>
+  </a>
+<% end %>

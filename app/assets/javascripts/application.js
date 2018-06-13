@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/datepicker
-//= require jquery-ui/datepicker-es
+//= require jquery-ui/widgets/datepicker
+//= require jquery-ui/i18n/datepicker-es
+//= require jquery-ui/widgets/autocomplete
+//= require jquery-ui/widgets/sortable
+//= require jquery-fileupload/basic
 //= require foundation
 //= require turbolinks
 //= require ckeditor/loader
@@ -49,7 +52,32 @@
 //= require fixed_bar
 //= require banners
 //= require social_share
+//= require checkbox_toggle
+//= require markdown-it
+//= require markdown_editor
+//= require cocoon
+//= require legislation_admin
+//= require legislation
+//= require legislation_allegations
+//= require legislation_annotatable
+//= require watch_form_changes
+//= require followable
+//= require flaggable
+//= require documentable
+//= require imageable
+//= require tree_navigator
 //= require custom
+//= require tag_autocomplete
+//= require polls_admin
+//= require leaflet
+//= require map
+//= require polls
+//= require sortable
+//= require table_sortable
+//= require investment_report_alert
+//= require send_newsletter_alert
+//= require managers
+//= require globalize
 
 var initialize_modules = function() {
   App.Comments.initialize();
@@ -74,10 +102,31 @@ var initialize_modules = function() {
   App.FixedBar.initialize();
   App.Banners.initialize();
   App.SocialShare.initialize();
+  App.CheckboxToggle.initialize();
+  App.MarkdownEditor.initialize();
+  App.LegislationAdmin.initialize();
+  App.LegislationAllegations.initialize();
+  App.Legislation.initialize();
+  if ( $(".legislation-annotatable").length )
+    App.LegislationAnnotatable.initialize();
+  App.WatchFormChanges.initialize();
+  App.TreeNavigator.initialize();
+  App.Documentable.initialize();
+  App.Imageable.initialize();
+  App.TagAutocomplete.initialize();
+  App.PollsAdmin.initialize();
+  App.Map.initialize();
+  App.Polls.initialize();
+  App.Sortable.initialize();
+  App.TableSortable.initialize();
+  App.InvestmentReportAlert.initialize();
+  App.SendNewsletterAlert.initialize();
+  App.Managers.initialize();
+  App.Globalize.initialize();
 };
 
 $(function(){
-  Turbolinks.enableProgressBar()
+  Turbolinks.enableProgressBar();
 
   $(document).ready(initialize_modules);
   $(document).on('page:load', initialize_modules);

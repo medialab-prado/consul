@@ -12,7 +12,7 @@
 
 #print_link { display: none !important; }
 
-#responsive-menu { display: none !important; }
+#responsive_menu { display: none !important; }
 
 .admin-sidebar { display: none !important; }
 
@@ -41,8 +41,6 @@ p.proposal-info span:nth-child(3) { display: none !important; }
 input[type="submit"] { display: none !important; }
 
 .filters h2 { margin: 0 !important; font-size: 20px !important; line-height: 20px !important; width: auto !important; }
-
-.search-results h2 { margin: 0 !important; font-size: 20px !important; line-height: 20px !important; }
 
 .admin h2 { font-size: 20px !important; line-height: 20px !important; }
 

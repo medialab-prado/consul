@@ -20,7 +20,7 @@ class Management::SessionsController < ActionController::Base
 
     def destroy_session
       session[:manager] = nil
-      session[:document_type] =   nil
+      session[:document_type] = nil
       session[:document_number] = nil
     end
 
@@ -37,9 +37,8 @@ class Management::SessionsController < ActionController::Base
     end
 
     def authenticated_manager?
-      if manager = ManagerAuthenticator.new(params).auth
-        session[:manager] = manager
-      end
+      manager = ManagerAuthenticator.new(params).auth
+      session[:manager] = manager if manager.present?
     end
 
 end

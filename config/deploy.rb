@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.5.0'
+lock '~> 3.10.1'
 
 def deploysecret(key)
   @deploy_secrets_yml ||= YAML.load_file('config/deploy-secrets.yml')[fetch(:stage).to_s]
@@ -47,6 +47,7 @@ namespace :deploy do
 
   after :publishing, 'deploy:restart'
   after :published, 'delayed_job:restart'
+  after :published, 'refresh_sitemap'
 
   after :finishing, 'deploy:cleanup'
 end
@@ -54,5 +55,15 @@ end
 task :install_bundler_gem do
   on roles(:app) do
     execute "rvm use #{fetch(:rvm1_ruby_version)}; gem install bundler"
+  end
+end
+
+task :refresh_sitemap do
+  on roles(:app) do
+    within release_path do
+      with rails_env: fetch(:rails_env) do
+        execute :rake, 'sitemap:refresh:no_ping'
+      end
+    end
   end
 end

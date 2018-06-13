@@ -1,4 +1,4 @@
-<%= form_for(@investment, url: form_url, method: :post) do |f| %>
+<%= form_for(@investment, url: form_url, method: :post, html: { multipart: true }) do |f| %>
   <%= render 'shared/errors', resource: @investment %>
 
   <div class="row">
@@ -7,8 +7,9 @@
     </div>
 
     <div class="small-12 column">
-      <%= f.text_field :title, maxlength: SpendingProposal.title_max_length %>
+      <%= f.text_field :title, maxlength: SpendingProposal.title_max_length, data: { js_suggest_result: "js_suggest_result", js_suggest: "#js-suggest", js_url: suggest_budget_investments_path(@budget) }%>
     </div>
+    <div id="js-suggest"></div>
 
     <%= f.invisible_captcha :subtitle %>
 
@@ -16,12 +17,36 @@
       <%= f.cktext_area :description, maxlength: SpendingProposal.description_max_length, ckeditor: { language: I18n.locale } %>
     </div>
 
-    <div class="small-12 column">
-      <%= f.text_field :external_url %>
-    </div>
+    <% if feature?(:allow_images) %>
+      <div class="images small-12 column">
+        <%= render 'images/nested_image', imageable: @investment, f: f %>
+      </div>
+    <% end %>
+
+    <% if feature?(:allow_attached_documents) %>
+      <div class="documents small-12 column">
+        <%= render 'documents/nested_documents', documentable: @investment, f: f %>
+      </div>
+    <% end %>
+
+    <% if feature?(:map) %>
+      <div class="small-12 column">
+
+        <%= render 'map_locations/form_fields',
+                   form:     f,
+                   map_location: @investment.map_location || MapLocation.new,
+                   label:    t("budgets.investments.form.map_location"),
+                   help:     t("budgets.investments.form.map_location_instructions"),
+                   remove_marker_label: t("budgets.investments.form.map_remove_marker"),
+                   parent_class: "budget_investment",
+                   i18n_namespace: "budgets.investments" %>
+
+      </div>
+    <% end %>
 
     <div class="small-12 column">
-      <%= f.text_field :location %>
+      <%= f.label :location, t("budgets.investments.form.location") %>
+      <%= f.text_field :location, label: false %>
     </div>
 
     <div class="small-12 column">
@@ -30,7 +55,7 @@
 
     <div class="small-12 column">
       <%= f.label :tag_list, t("budgets.investments.form.tags_label") %>
-      <p class="note"><%= t("budgets.investments.form.tags_instructions") %></p>
+      <p class="help-text" id="tags-list-help-text"><%= t("budgets.investments.form.tags_instructions") %></p>
 
       <div id="category_tags" class="tags">
         <%= f.label :category_tag_list, t("budgets.investments.form.tag_category_label") %>
@@ -43,9 +68,10 @@
       <%= f.text_field :tag_list, value: @investment.tag_list.to_s,
                         label: false,
                         placeholder: t("budgets.investments.form.tags_placeholder"),
-                        class: 'js-tag-list' %>
+                        aria: {describedby: "tags-list-help-text"},
+                        class: 'js-tag-list tag-autocomplete',
+                        data: {js_url: suggest_tags_path} %>
     </div>
-
 
     <% unless current_user.manager? %>
 

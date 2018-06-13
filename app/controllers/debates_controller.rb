@@ -3,17 +3,15 @@ class DebatesController < ApplicationController
   include CommentableActions
   include FlagActions
 
-  before_action :parse_search_terms, only: [:index, :suggest]
-  before_action :parse_advanced_search_terms, only: :index
   before_action :parse_tag_filter, only: :index
-  before_action :set_search_order, only: :index
   before_action :authenticate_user!, except: [:index, :show, :map]
+  before_action :set_view, only: :index
 
   feature_flag :debates
 
   invisible_captcha only: [:create, :update], honeypot: :subtitle
 
-  has_orders %w{hot_score confidence_score created_at relevance}, only: :index
+  has_orders ->(c) { Debate.debates_orders(c.current_user) }, only: :index
   has_orders %w{most_voted newest oldest}, only: :show
 
   load_and_authorize_resource
@@ -22,11 +20,11 @@ class DebatesController < ApplicationController
 
   def index_customization
     @featured_debates = @debates.featured
-    @proposal_successfull_exists = Proposal.successfull.exists?
   end
 
   def show
     super
+    @related_contents = Kaminari.paginate_array(@debate.relationed_contents).page(params[:page]).per(5)
     redirect_to debate_path(@debate), status: :moved_permanently if request.path != debate_path(@debate)
   end
 
@@ -53,6 +51,10 @@ class DebatesController < ApplicationController
 
     def resource_model
       Debate
+    end
+
+    def set_view
+      @view = (params[:view] == "minimal") ? "minimal" : "default"
     end
 
 end

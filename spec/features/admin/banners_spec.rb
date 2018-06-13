@@ -29,7 +29,7 @@ feature 'Admin banners magement' do
                   target_url:  "http://www.url.com",
                   style: "banner-style.banner-three",
                   image: "banner-img.banner-three",
-                  post_started_at: (Time.current - 1.days),
+                  post_started_at: (Time.current - 1.day),
                   post_ended_at:   (Time.current + 10.days))
 
       @banner4 = create(:banner, title: "Banner number four",
@@ -114,15 +114,16 @@ feature 'Admin banners magement' do
     visit admin_root_path
 
     within('#side_menu') do
+      click_link "Site content"
       click_link "Manage banners"
     end
 
     click_link "Edit banner"
 
-    select 'Banner style 1', from: 'banner_style'
-    select 'Banner image 2', from: 'banner_image'
     fill_in 'banner_title', with: 'Modified title'
     fill_in 'banner_description', with: 'Edited text'
+    select 'Banner style 1', from: 'banner_style'
+    select 'Banner image 2', from: 'banner_image'
 
     within('div#js-banner-style') do
       expect(page).to have_selector('h2', text: 'Modified title')
@@ -135,8 +136,8 @@ feature 'Admin banners magement' do
     expect(page).to have_content 'Modified title'
     expect(page).to have_content 'Edited text'
 
-    expect(page).to_not have_content 'Hello'
-    expect(page).to_not have_content 'Wrong text'
+    expect(page).not_to have_content 'Hello'
+    expect(page).not_to have_content 'Wrong text'
   end
 
   scenario 'Delete a banner' do
@@ -159,7 +160,7 @@ feature 'Admin banners magement' do
     click_link "Delete banner"
 
     visit admin_root_path
-    expect(page).to_not have_content 'Ugly banner'
+    expect(page).not_to have_content 'Ugly banner'
   end
 
 end

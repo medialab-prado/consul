@@ -9,7 +9,7 @@ class StatsController < ApplicationController
     @visits = daily_cache('visits') { Visit.count }
     @debates = daily_cache('debates') { Debate.with_hidden.count }
     @proposals = daily_cache('proposals') { Proposal.with_hidden.count }
-    @comments = daily_cache('comments') { Comment.with_hidden.count }
+    @comments = daily_cache('comments') { Comment.not_valuations.with_hidden.count }
 
     @debate_votes = daily_cache('debate_votes') { Vote.where(votable_type: 'Debate').count }
     @proposal_votes = daily_cache('proposal_votes') { Vote.where(votable_type: 'Proposal').count }
@@ -23,6 +23,6 @@ class StatsController < ApplicationController
   private
 
     def daily_cache(key, &block)
-      Rails.cache.fetch("public_stats/#{Time.current.strftime("%Y-%m-%d")}/#{key}", &block)
+      Rails.cache.fetch("public_stats/#{Time.current.strftime('%Y-%m-%d')}/#{key}", &block)
     end
 end
