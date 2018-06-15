@@ -1039,4 +1039,14 @@ LOREM_IPSUM
       action_type 'resource'
     end
   end
+
+  factory :proposal_executed_dashboard_action, class: 'ProposalExecutedDashboardAction' do
+    proposal
+    proposal_dashboard_action
+    executed_at { Time.now }
+
+    trait :with_comments do
+      comments { Faker::Lorem.sentence(10) }
+    end
+  end
 end
