@@ -1049,6 +1049,34 @@ en:
       delete:
         success: Geozone successfully deleted
         error: This geozone can't be deleted since there are elements attached to it
+    proposal_dashboard_actions:
+      action_type:
+        proposed_action: Proposed action
+        resource: Resource
+      index:
+        create: Create
+        edit: Edit
+        delete: Delete
+        no_records: No records found
+        active: 'Yes'
+        inactive: 'No'
+      new:
+        creating: New action for the proposals dashboard
+        back: Back to list
+      create:
+        notice: Action created successfully
+      edit:
+        editing: Edit action for the proposals dashboard
+        back: Back to list
+      delete:
+        success: Action successfully deleted
+      form:
+        submit_button: Save
+      errors:
+        form:
+          error:
+            one: 'error prevented this action from being saved'
+            other: 'errors prevented this action from being saved'
     signature_sheets:
       author: Author
       created_at: Creation date

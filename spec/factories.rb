@@ -170,6 +170,7 @@ FactoryBot.define do
     responsible_name     'John Snow'
     terms_of_service     '1'
     skip_map             '1'
+    published_at         { Time.now }
     association :author, factory: :user
 
     trait :hidden do
@@ -211,6 +212,10 @@ FactoryBot.define do
 
     trait :successful do
       cached_votes_up { Proposal.votes_needed_for_success + 100 }
+    end
+
+    trait :draft do
+      published_at nil
     end
   end
 
@@ -992,4 +997,46 @@ LOREM_IPSUM
   factory :widget_feed, class: 'Widget::Feed' do
   end
 
+  factory :proposal_dashboard_action, class: 'ProposalDashboardAction' do
+    title { Faker::Lorem.sentence }
+    description { Faker::Lorem.sentence }
+    link nil
+    request_to_administrators true
+    day_offset 0
+    required_supports 0
+    order 0
+    active true
+    hidden_at nil
+    action_type 'proposed_action'
+
+    trait :admin_request do
+      link nil
+      request_to_administrators true
+    end
+
+    trait :external_link do
+      link { Faker::Internet.url }
+      request_to_administrators false
+    end
+
+    trait :inactive do
+      active false
+    end 
+    
+    trait :active do
+      active true
+    end
+
+    trait :deleted do
+      hidden_at { Time.now.utc }
+    end
+
+    trait :proposed_action do
+      action_type 'proposed_action'
+    end
+
+    trait :resource do
+      action_type 'resource'
+    end
+  end
 end

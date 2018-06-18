@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180519132610) do
+ActiveRecord::Schema.define(version: 20180612072003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -856,6 +856,19 @@ ActiveRecord::Schema.define(version: 20180519132610) do
 
   add_index "polls", ["starts_at", "ends_at"], name: "index_polls_on_starts_at_and_ends_at", using: :btree
 
+  create_table "proposal_dashboard_actions", force: :cascade do |t|
+    t.string   "title",                     limit: 80
+    t.string   "description"
+    t.string   "link"
+    t.boolean  "request_to_administrators",            default: false
+    t.integer  "day_offset",                           default: 0
+    t.integer  "required_supports",                    default: 0
+    t.integer  "order",                                default: 0
+    t.boolean  "active",                               default: true
+    t.datetime "hidden_at"
+    t.integer  "action_type",                          default: 0,     null: false
+  end
+
   create_table "proposal_notifications", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
@@ -890,6 +903,7 @@ ActiveRecord::Schema.define(version: 20180519132610) do
     t.string   "retired_reason"
     t.text     "retired_explanation"
     t.integer  "community_id"
+    t.datetime "published_at"
   end
 
   add_index "proposals", ["author_id", "hidden_at"], name: "index_proposals_on_author_id_and_hidden_at", using: :btree

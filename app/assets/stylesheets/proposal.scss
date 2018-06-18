@@ -1,0 +1,18 @@
+.proposal-show {
+  p.centered {
+    text-align: center;
+  }
+
+  div.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.proposal-created {
+  margin-bottom: 1.5rem;
+  .row {
+    background-color: #e7f3fd;
+  }
+}

@@ -305,6 +305,24 @@ en:
     create:
       form:
         submit_button: Create proposal
+    created:
+      title: Congratulations! You have taken the first step.
+      motivation: |
+        <p>
+        It is important to have at least 100 supports on the first day of the campaign to be able to
+        boost your proposal.
+        </p>
+        <p>
+          <strong>Do you think you need help to achieve this goal?</strong>
+          <br>
+          If so, leave your proposal as a draft and we will guide you.
+        </p>
+      publish: No, I want to publish the proposal
+      dashboard: Yes, I want help and I'll publish later
+      preview_title: This is how your proposal will look when you publish it
+    share:
+      improve_it: Improve your campaign and get more support.
+      dashboard: See more information
     edit:
       editing: Edit proposal
       form:
@@ -404,6 +422,7 @@ en:
       start_new: Create new proposal
     notice:
       retired: Proposal retired
+      published: The proposal has been published
     proposal:
       created: "You've created a proposal!"
       share:
@@ -441,7 +460,7 @@ en:
         other: "%{count} comments"
         zero: No comments
       comments_tab: Comments
-      edit_proposal_link: Edit
+      dashboard_proposal_link: Dashboard
       flag: This proposal has been flagged as inappropriate by several users.
       login_to_comment: You must %{signin} or %{signup} to leave a comment.
       notifications_tab: Notifications
@@ -449,15 +468,25 @@ en:
       retired_warning_link_to_explanation: Read the explanation before voting for it.
       retired: Proposal retired by the author
       share: Share
-      send_notification: Send notification
       no_notifications: "This proposal has any notifications."
       embed_video_title: "Video on %{proposal}"
       title_external_url: "Additional documentation"
       title_video_url: "External video"
       author: Author
+    preview:
+      draft: Draft
     update:
       form:
         submit_button: Save changes
+  proposals_dashboard:
+    index:
+      draft: Draft
+      published: Published
+      general: General
+      publish: Publish
+      edit_proposal_link: Edit
+      send_notification: Send notification
+      retire: Retire
   polls:
     all: "All"
     no_dates: "no date assigned"
@@ -726,6 +755,7 @@ en:
       deleted_proposal: This proposal has been deleted
       deleted_budget_investment: This investment project has been deleted
       proposals: Proposals
+      proposals_status: Status
       debates: Debates
       budget_investments: Budget investments
       comments: Comments
@@ -752,9 +782,9 @@ en:
       send_private_message: "Send private message"
       delete_alert: "Are you sure you want to delete your investment project? This action can't be undone"
     proposals:
-      send_notification: "Send notification"
-      retire: "Retire"
       retired: "Retired proposal"
+      draft: Draft
+      published: Published
       see: "See proposal"
   votes:
     agree: I agree
