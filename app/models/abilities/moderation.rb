@@ -52,6 +52,8 @@ module Abilities
 
       can :block, User
       cannot :block, User, id: user.id
+
+      can :manage, AdministratorTask
     end
   end
 end
