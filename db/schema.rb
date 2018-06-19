@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180612072003) do
+ActiveRecord::Schema.define(version: 20180615102215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,18 @@ ActiveRecord::Schema.define(version: 20180612072003) do
 
   add_index "activities", ["actionable_id", "actionable_type"], name: "index_activities_on_actionable_id_and_actionable_type", using: :btree
   add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
+
+  create_table "administrator_tasks", force: :cascade do |t|
+    t.integer  "source_id"
+    t.string   "source_type"
+    t.integer  "user_id"
+    t.datetime "executed_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "administrator_tasks", ["source_type", "source_id"], name: "index_administrator_tasks_on_source_type_and_source_id", using: :btree
+  add_index "administrator_tasks", ["user_id"], name: "index_administrator_tasks_on_user_id", using: :btree
 
   create_table "administrators", force: :cascade do |t|
     t.integer "user_id"
@@ -869,6 +881,18 @@ ActiveRecord::Schema.define(version: 20180612072003) do
     t.integer  "action_type",                          default: 0,     null: false
   end
 
+  create_table "proposal_executed_dashboard_actions", force: :cascade do |t|
+    t.integer  "proposal_id"
+    t.integer  "proposal_dashboard_action_id"
+    t.datetime "executed_at"
+    t.text     "comments"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "proposal_executed_dashboard_actions", ["proposal_dashboard_action_id"], name: "index_proposal_action", using: :btree
+  add_index "proposal_executed_dashboard_actions", ["proposal_id"], name: "index_proposal_executed_dashboard_actions_on_proposal_id", using: :btree
+
   create_table "proposal_notifications", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
@@ -1255,6 +1279,7 @@ ActiveRecord::Schema.define(version: 20180612072003) do
     t.datetime "updated_at",             null: false
   end
 
+  add_foreign_key "administrator_tasks", "users"
   add_foreign_key "administrators", "users"
   add_foreign_key "annotations", "legacy_legislations"
   add_foreign_key "annotations", "users"
@@ -1290,6 +1315,8 @@ ActiveRecord::Schema.define(version: 20180612072003) do
   add_foreign_key "poll_recounts", "poll_booth_assignments", column: "booth_assignment_id"
   add_foreign_key "poll_recounts", "poll_officer_assignments", column: "officer_assignment_id"
   add_foreign_key "poll_voters", "polls"
+  add_foreign_key "proposal_executed_dashboard_actions", "proposal_dashboard_actions"
+  add_foreign_key "proposal_executed_dashboard_actions", "proposals"
   add_foreign_key "proposals", "communities"
   add_foreign_key "related_content_scores", "related_contents"
   add_foreign_key "related_content_scores", "users"

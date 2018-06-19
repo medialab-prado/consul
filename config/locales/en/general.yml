@@ -487,6 +487,14 @@ en:
       edit_proposal_link: Edit
       send_notification: Send notification
       retire: Retire
+      progress: Progress
+      actions: Actions
+    proposed_action:
+      execute: Execute
+    form:
+      request: Request
+    create_request:
+      success: The request for the administrator has been successfully sent.
   polls:
     all: "All"
     no_dates: "no date assigned"

@@ -1039,4 +1039,30 @@ LOREM_IPSUM
       action_type 'resource'
     end
   end
+
+  factory :proposal_executed_dashboard_action, class: 'ProposalExecutedDashboardAction' do
+    proposal
+    proposal_dashboard_action
+    executed_at { Time.now }
+
+    trait :with_comments do
+      comments { Faker::Lorem.sentence(10) }
+    end
+  end
+
+  factory :administrator_task do
+    source { |s| s.association(:proposal_executed_dashboard_action, :with_comments) }
+    user
+    executed_at { Time.now }
+
+    trait :pending do
+      user { nil }
+      executed_at { nil }
+    end
+
+    trait :done do
+      user
+      executed_at { Time.now }
+    end
+  end
 end

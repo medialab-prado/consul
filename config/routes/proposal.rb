@@ -3,6 +3,12 @@ resources :proposals do
     collection do
       patch :publish
     end
+
+    member do
+      post :execute
+      get :new_request
+      post :create_request
+    end
   end
 
   member do
