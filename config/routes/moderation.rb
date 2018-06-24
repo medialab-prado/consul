@@ -22,6 +22,4 @@ namespace :moderation do
     put :hide, on: :member
     put :moderate, on: :collection
   end
-
-  resources :administrator_tasks, only: %i[index edit update]
 end

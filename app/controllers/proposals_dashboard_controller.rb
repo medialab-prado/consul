@@ -4,7 +4,7 @@
 class ProposalsDashboardController < ApplicationController
   before_action :authenticate_user!
 
-  helper_method :proposal, :proposed_actions, :proposal_dashboard_action
+  helper_method :proposal, :proposed_actions, :resources, :proposal_dashboard_action
   respond_to :html
   layout 'proposals_dashboard'
 
@@ -50,6 +50,15 @@ class ProposalsDashboardController < ApplicationController
     end
   end
 
+  def stats
+    authorize! :dashboard, proposal
+  end
+
+  def supports
+    authorize! :dashboard, proposal
+    render json: ProposalSupportsQuery.for(params)
+  end
+
   private
 
   def proposal_executed_dashboard_action_params
@@ -66,5 +75,9 @@ class ProposalsDashboardController < ApplicationController
 
   def proposed_actions
     @proposed_actions ||= ProposalDashboardAction.proposed_actions.active_for(proposal)
+  end
+
+  def resources
+    @resources ||= ProposalDashboardAction.resources.active_for(proposal)
   end
 end

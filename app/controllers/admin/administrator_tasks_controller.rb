@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-class Moderation::AdministratorTasksController < Moderation::BaseController
+class Admin::AdministratorTasksController < Admin::BaseController
   helper_method :administrator_task
 
   def index
@@ -16,7 +14,7 @@ class Moderation::AdministratorTasksController < Moderation::BaseController
     authorize! :update, administrator_task
 
     administrator_task.update(user: current_user, executed_at: Time.now)
-    redirect_to moderation_administrator_tasks_path, { flash: { notice: t('.success') } }
+    redirect_to admin_administrator_tasks_path, { flash: { notice: t('.success') } }
   end
 
   private

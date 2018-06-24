@@ -2,17 +2,17 @@
 
 require 'rails_helper'
 
-describe 'Administrator tasks moderation' do
-  let(:moderator) { create(:moderator) }
+describe 'Administrator tasks' do
+  let(:administrator) { create(:administrator) }
 
   before do
-    login_as moderator.user
+    login_as administrator.user
   end
 
   context 'when accessing the pending task list' do
     context 'and no pending task' do
       before do
-        visit moderation_administrator_tasks_path
+        visit admin_administrator_tasks_path
       end
 
       it 'informs that there are no pending tasks' do
@@ -24,7 +24,7 @@ describe 'Administrator tasks moderation' do
       let!(:task) { create :administrator_task, :pending }
 
       before do
-        visit moderation_administrator_tasks_path
+        visit admin_administrator_tasks_path
       end
 
       it 'shows the related proposal title' do
@@ -45,7 +45,7 @@ describe 'Administrator tasks moderation' do
     let!(:task) { create :administrator_task, :pending }
 
     before do
-      visit moderation_administrator_tasks_path
+      visit admin_administrator_tasks_path
       click_link 'Solve'
     end
 
