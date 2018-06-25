@@ -27,10 +27,10 @@
           description: @proposal.summary
         } %>
 
-        <% if can? :dashboard, @proposal %> 
+        <% if can?(:dashboard, @proposal) %> 
           <div class="callout light">
             <p class="centered">
-              <strong><%= t '.improve_it' %></strong>
+              <strong><%= t('.improve_it') %></strong>
             </p>
             <div class="centered">
               <%= link_to t('.dashboard'), proposal_dashboard_index_path(@proposal), class: 'button' %>

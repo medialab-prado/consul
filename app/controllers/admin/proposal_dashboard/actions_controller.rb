@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
-class Admin::ProposalDashboardActionsController < Admin::BaseController
-  helper_method :proposal_dashboard_action
+class Admin::ProposalDashboard::ActionsController < Admin::ProposalDashboard::BaseController
+  helper_method :proposal_dashboard_action, :resource
 
   def index
     @proposal_dashboard_actions = ProposalDashboardAction.all
@@ -34,7 +32,6 @@ class Admin::ProposalDashboardActionsController < Admin::BaseController
     else
       render :edit
     end
-
   end
 
   def destroy
@@ -48,6 +45,10 @@ class Admin::ProposalDashboardActionsController < Admin::BaseController
   end
 
   private
+
+  def resource
+    @proposal_dashboard_action
+  end
 
   def proposal_dashboard_action_params
     params
