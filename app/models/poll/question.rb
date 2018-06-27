@@ -5,7 +5,7 @@ class Poll::Question < ActiveRecord::Base
   acts_as_paranoid column: :hidden_at
   include ActsAsParanoidAliases
 
-  belongs_to :poll
+  belongs_to :poll, inverse_of: :questions
   belongs_to :author, -> { with_hidden }, class_name: 'User', foreign_key: 'author_id'
 
   has_many :comments, as: :commentable
@@ -16,9 +16,11 @@ class Poll::Question < ActiveRecord::Base
 
   validates :title, presence: true
   validates :author, presence: true
-  validates :poll_id, presence: true
+  validates :poll_id, presence: true, if: Proc.new { |question| question.poll.nil? }
 
   validates :title, length: { minimum: 4 }
+
+  accepts_nested_attributes_for :question_answers, reject_if: :all_blank, allow_destroy: true
 
   scope :by_poll_id,    ->(poll_id) { where(poll_id: poll_id) }
 
