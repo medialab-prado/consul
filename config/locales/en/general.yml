@@ -523,6 +523,18 @@ en:
       links: Links
   dashboard:
     polls:
+      index:
+        title: Polls
+        create: Create poll
+        count:
+          one: You have created %{count} poll.
+          other: You have created %{count} polls.
+      poll:
+        published_on: Published on
+        responses:
+          one: "%{count} response"
+          other: "%{count} responses"
+        view_responses: Ver respuestas
       form:
         add_question: Add question
       question_fields:
@@ -598,6 +610,8 @@ en:
       results:
         title: "Questions"
         most_voted_answer: "Most voted answer: "
+    poll_header:
+      back_to_proposal: Back to proposal
   poll_questions:
     create_question: "Create question"
     show:

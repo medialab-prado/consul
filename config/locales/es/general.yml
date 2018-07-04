@@ -523,6 +523,18 @@ es:
       liks: Enlaces
   dashboard:
     polls:
+      index:
+        title: Encuestas
+        create: Crear encuesta
+        count:
+          one: Has creado %{count} encuesta.
+          other: Has creado %{count} encuestas.
+      poll:
+        published_on: Publicada
+        responses:
+          one: "%{count} respuesta"
+          other: "%{count} respuestas"
+        view_responses: Ver respuestas
       form:
         add_question: Añadir pregunta
       question_fields:
@@ -598,6 +610,8 @@ es:
       results:
         title: "Preguntas"
         most_voted_answer: 'Respuesta más votada: '
+    poll_header:
+      back_to_proposal: Volver a la propuesta
   poll_questions:
     create_question: "Crear pregunta"
     show:
