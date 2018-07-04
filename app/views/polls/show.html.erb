@@ -32,7 +32,9 @@
         </div>
       <% end %>
 
-      <%= link_to t("polls.show.participate_in_other_polls"), polls_path, class: "button hollow" %>
+      <% if @poll.related.nil? %>
+        <%= link_to t('polls.show.participate_in_other_polls'), polls_path, class: 'button hollow' %>
+      <% end %>
     </div>
   </div>
 
