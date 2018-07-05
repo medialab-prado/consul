@@ -497,10 +497,7 @@ en:
       my_proposal: My proposal
       progress: Progress
       resources: Resources
-      actions: Actions
       polls: Polls
-    proposed_action:
-      execute: Execute
     form:
       request: Request
     create_request:
@@ -528,6 +525,8 @@ en:
       required_supports: "%{supports} supports required"
       and: and
       view_resource: See resource
+    recommended_actions:
+      title: Recommended actions
   dashboard:
     polls:
       index:
