@@ -953,6 +953,9 @@ en:
     header:
       title: Administration
   links:
+    form:
+      delete_button: Delete
+      cancel_button: Cancel
     nested_links:
       title: Links
       note: Add the links that are of interest
@@ -960,4 +963,3 @@ en:
     link_fields:
       label_placeholder: Link title
       url_placeholder: Link address
-      destroy: Remove link

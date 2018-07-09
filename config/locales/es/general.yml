@@ -952,6 +952,9 @@ es:
     header:
       title: Administración
   links:
+    form:
+      delete_button: Borrar
+      cancel_button: Cancelar
     nested_links:
       title: Enlaces
       note: Añade los enlaces que sean de interés.
@@ -959,4 +962,3 @@ es:
     link_fields:
       label_placeholder: Título del enlace
       url_placeholder: Dirección del enlace
-      destroy: Borrar enlace
