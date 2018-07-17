@@ -29,10 +29,17 @@ en:
         title: Title
         description: Description
         target_url: Link
-        style: Style
-        image: Image
         post_started_at: Post started at
         post_ended_at: Post ended at
+        sections_label: Sections where it will appear
+        sections:
+          homepage: Homepage
+          debates: Debates
+          proposals: Proposals
+          budgets: Participatory budgeting
+          help_page: Help page
+        background_color: Background colour
+        font_color: Font colour
       edit:
         editing: Edit banner
         form:
@@ -251,6 +258,7 @@ en:
         table_title: "Title"
         table_description: "Description"
         table_publication_date: "Publication date"
+        table_status: Status
         table_actions: "Actions"
         delete: "Delete milestone"
         no_milestones: "Don't have defined milestones"
@@ -260,6 +268,8 @@ en:
       form:
         add_language: Add language
         remove_language: Remove language
+        admin_statuses: Admin investment statuses
+        no_statuses_defined: There are no defined investment statuses yet
       new:
         creating: Create milestone
         date: Date
@@ -272,6 +282,26 @@ en:
         notice: Milestone updated successfully
       delete:
         notice: Milestone successfully deleted
+    statuses:
+      index:
+        title: Investment statuses
+        empty_statuses: There are no investment statuses created
+        new_status: Create new investment status
+        table_name: Name
+        table_description: Description
+        table_actions: Actions
+        delete: Delete
+        edit: Edit
+      edit:
+        title: Edit investment status
+      update:
+        notice: Investment status updated successfully
+      new:
+        title: Create investment status
+      create:
+        notice: Investment status created successfully
+      delete:
+        notice: Investment status deleted successfully
     comments:
       index:
         filter: Filter
@@ -481,6 +511,7 @@ en:
       hidden_comments: Hidden comments
       hidden_debates: Hidden debates
       hidden_proposals: Hidden proposals
+      hidden_proposal_notifications: Hidden proposal notifications
       hidden_users: Hidden users
       administrators: Administrators
       managers: Managers
@@ -511,6 +542,7 @@ en:
       title_profiles: Profiles
       title_settings: Settings
       title_site_customization: Site content
+      title_booths: Voting booths
       legislation: Collaborative Legislation
       users: Users
       proposals_dashboard: Proposals dashboard
@@ -918,6 +950,15 @@ en:
           without_confirmed_hide: Pending
         title: Hidden proposals
         no_hidden_proposals: There is no hidden proposals.
+    proposal_notifications:
+      index:
+        filter: Filter
+        filters:
+          all: All
+          with_confirmed_hide: Confirmed
+          without_confirmed_hide: Pending
+        title: Hidden notifications
+        no_hidden_proposals: There is no hidden notifications.
     settings:
       flash:
         updated: Value updated

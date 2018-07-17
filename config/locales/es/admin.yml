@@ -29,10 +29,17 @@ es:
         title: Título
         description: Descripción
         target_url: Enlace
-        style: Estilo
-        image: Imagen
         post_started_at: Inicio de publicación
         post_ended_at: Fin de publicación
+        sections_label: Secciones en las que aparece
+        sections:
+          homepage: Homepage
+          debates: Debates
+          proposals: Propuestas
+          budgets: Presupuestos participativos
+          help_page: Página de ayuda
+        background_color: Color de fondo
+        font_color: Color del texto
       edit:
         editing: Editar el banner
         form:
@@ -251,6 +258,7 @@ es:
         table_title: "Título"
         table_description: "Descripción"
         table_publication_date: "Fecha de publicación"
+        table_status: Estado
         table_actions: "Acciones"
         delete: "Eliminar hito"
         no_milestones: "No hay hitos definidos"
@@ -260,6 +268,8 @@ es:
       form:
         add_language: Añadir idioma
         remove_language: Eliminar idioma
+        admin_statuses: Gestionar estados de proyectos
+        no_statuses_defined: No hay estados definidos
       new:
         creating: Crear hito
         date: Fecha
@@ -272,6 +282,26 @@ es:
         notice: Hito actualizado
       delete:
         notice: Hito borrado correctamente
+    statuses:
+      index:
+        title: Estados de proyectos
+        empty_statuses: Aún no se ha creado ningún estado de proyecto
+        new_status: Crear nuevo estado de proyecto
+        table_name: Nombre
+        table_description: Descripción
+        table_actions: Acciones
+        delete: Borrar
+        edit: Editar
+      edit:
+        title: Editar estado de proyecto
+      update:
+        notice: Estado de proyecto editado correctamente
+      new:
+        title: Crear estado de proyecto
+      create:
+        notice: Estado de proyecto creado correctamente
+      delete:
+        notice: Estado de proyecto eliminado correctamente
     comments:
       index:
         filter: Filtro
@@ -481,6 +511,7 @@ es:
       hidden_comments: Comentarios ocultos
       hidden_debates: Debates ocultos
       hidden_proposals: Propuestas ocultas
+      hidden_proposal_notifications: Notificationes de propuesta ocultas
       hidden_users: Usuarios bloqueados
       administrators: Administradores
       managers: Gestores
@@ -511,6 +542,7 @@ es:
       title_profiles: Perfiles
       title_settings: Configuración
       title_site_customization: Contenido del sitio
+      title_booths: Urnas de votación
       legislation: Legislación colaborativa
       users: Usuarios
       proposals_dashboard: Panel de control de propuestas
@@ -918,6 +950,15 @@ es:
           without_confirmed_hide: Pendientes
         title: Propuestas ocultas
         no_hidden_proposals: No hay propuestas ocultas.
+    proposal_notifications:
+      index:
+        filter: Filtro
+        filters:
+          all: Todas
+          with_confirmed_hide: Confirmadas
+          without_confirmed_hide: Pendientes
+        title: Notificaciones ocultas
+        no_hidden_proposals: No hay notificaciones ocultas.
     settings:
       flash:
         updated: Valor actualizado

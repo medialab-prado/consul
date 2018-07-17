@@ -18,7 +18,7 @@
 // 16. Flags
 // 17. Activity
 // 18. Banners
-// 19. Recommended Section Home
+// 19. Recommendations
 // 20. Documents
 // 21. Related content
 // 22. Images
@@ -411,11 +411,6 @@ a {
 
 .uppercase {
   text-transform: uppercase;
-}
-
-figure img {
-  height: 100%;
-  width: 100%;
 }
 
 // 02. Header
@@ -1963,7 +1958,8 @@ table {
   }
 }
 
-.comment-body {
+.comment-body,
+.notification-body {
 
   img {
     margin-right: $line-height / 2;
@@ -2230,7 +2226,8 @@ table {
 
 .banner-style-one,
 .banner-style-two,
-.banner-style-three {
+.banner-style-three,
+.banner {
   margin: 0;
   margin-bottom: $line-height;
 
@@ -2264,8 +2261,8 @@ table {
   }
 }
 
-// 19. Recommended Section Home
-// ----------------------------
+// 19. Recommendations
+// -------------------
 
 .section-recommended {
   background: #fafafa;
@@ -2399,11 +2396,60 @@ table {
 
   .carousel-image .orbit-wrapper img {
     display: block;
+    height: rem-calc(120);
 
     @include breakpoint(small) {
       margin: 0 auto;
     }
   }
+}
+
+.recommended-index {
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  margin-bottom: $line-height;
+  margin-top: rem-calc(-25);
+  padding: $line-height 0 $line-height / 2;
+
+  @include breakpoint(medium) {
+    padding-top: 0;
+  }
+
+  h2 {
+    font-size: $small-font-size;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: $base-font-size;
+    margin-bottom: 0;
+  }
+
+  a {
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .recommendation {
+    background: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+    display: block;
+    margin-bottom: $line-height / 4;
+    padding: $line-height / 2;
+
+    &:hover {
+      box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+.hide-recommendations {
+  color: $text-light;
+  position: absolute;
+  right: 12px;
+  top: -18px;
 }
 
 // 20. Documents
@@ -2655,6 +2701,28 @@ table {
 
   .card {
     border: 0;
+    overflow: visible;
+
+    a {
+
+      img {
+        transition-duration: 0.3s;
+        transition-property: transform;
+      }
+    }
+
+    a:hover {
+      box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+
+      img {
+        transform: scale(1.1);
+      }
+    }
+
+    p {
+      padding: 0 $line-height / 4;
+    }
   }
 
   h3 {
@@ -2666,6 +2734,26 @@ table {
       min-width: rem-calc(240);
       padding: $line-height / 2 0;
     }
+  }
+
+  .figure-card {
+
+    figcaption {
+      z-index: 3;
+    }
+
+    .gradient {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.01) 1%, rgba(0, 0, 0, 1) 100%);
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      z-index: 2;
+    }
+  }
+
+  figure img {
+    height: 100%;
+    width: 100%;
   }
 }
 

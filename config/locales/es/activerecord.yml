@@ -13,6 +13,9 @@ es:
       budget/investment/milestone:
         one: "hito"
         other: "hitos"
+      budget/investment/status:
+        one: "Estado de proyecto"
+        other: "Estados de proyecto"
       comment:
         one: "Comentario"
         other: "Comentarios"
@@ -109,6 +112,9 @@ es:
       link:
         one: Enlace
         other: Enlaces
+      proposal_notification:
+        one: "Notificación de propuesta"
+        other: "Notificaciones de propuestas"
     attributes:
       budget:
         name: "Nombre"
@@ -132,9 +138,13 @@ es:
         image: "Imagen descriptiva del proyecto de gasto"
         image_title: "Título de la imagen"
       budget/investment/milestone:
+        status_id: "Estado actual del proyecto (opcional)"
         title: "Título"
-        description: "Descripción"
+        description: "Descripción (opcional si se ha asignado un estado de proyecto)"
         publication_date: "Fecha de publicación"
+      budget/investment/status:
+        name: "Nombre"
+        description: "Descripción (opcional)"
       budget/heading:
         name: "Nombre de la partida"
         price: "Cantidad"

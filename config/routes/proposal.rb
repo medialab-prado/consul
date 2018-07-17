@@ -44,5 +44,6 @@ resources :proposals do
     get :map
     get :suggest
     get :summary
+    put 'recommendations/disable', only: :index, controller: 'proposals', action: :disable_recommendations
   end
 end

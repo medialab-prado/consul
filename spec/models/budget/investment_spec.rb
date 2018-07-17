@@ -348,7 +348,7 @@ describe Budget::Investment do
       assigned_investment = create(:budget_investment, valuators: [valuator],
                                                        valuator_groups: [valuator_group])
       another_assigned_investment = create(:budget_investment, valuator_groups: [valuator_group])
-      unassigned_investment = create(:budget_investment, valuators: [valuator], valuator_groups: [])
+      _unassigned_investment = create(:budget_investment, valuators: [valuator], valuator_groups: [])
       create(:budget_investment, valuators: [valuator], valuator_groups: [create(:valuator_group)])
 
       by_valuator_group = described_class.by_valuator_group(valuator.valuator_group_id)
@@ -361,7 +361,7 @@ describe Budget::Investment do
   describe "scopes" do
     describe "valuation_open" do
       it "returns all investments with false valuation_finished" do
-        investment1 = create(:budget_investment, valuation_finished: true)
+        _investment1 = create(:budget_investment, valuation_finished: true)
         investment2 = create(:budget_investment)
 
         valuation_open = described_class.valuation_open
@@ -373,8 +373,8 @@ describe Budget::Investment do
 
     describe "without_admin" do
       it "returns all open investments without assigned admin" do
-        investment1 = create(:budget_investment, valuation_finished: true)
-        investment2 = create(:budget_investment, administrator: create(:administrator))
+        _investment1 = create(:budget_investment, valuation_finished: true)
+        _investment2 = create(:budget_investment, administrator: create(:administrator))
         investment3 = create(:budget_investment)
 
         without_admin = described_class.without_admin
@@ -387,7 +387,7 @@ describe Budget::Investment do
     describe "managed" do
       it "returns all open investments with assigned admin but without assigned valuators" do
         investment1 = create(:budget_investment, administrator: create(:administrator))
-        investment2 = create(:budget_investment, administrator: create(:administrator), valuation_finished: true)
+        _investment2 = create(:budget_investment, administrator: create(:administrator), valuation_finished: true)
         investment3 = create(:budget_investment, administrator: create(:administrator))
         investment1.valuators << create(:valuator)
 
@@ -400,7 +400,7 @@ describe Budget::Investment do
 
     describe "valuating" do
       it "returns all investments with assigned valuator but valuation not finished" do
-        investment1 = create(:budget_investment)
+        _investment1 = create(:budget_investment)
         investment2 = create(:budget_investment)
         investment3 = create(:budget_investment, valuation_finished: true)
 
@@ -414,7 +414,7 @@ describe Budget::Investment do
       end
 
       it "returns all investments with assigned valuator groups but valuation not finished" do
-        investment1 = create(:budget_investment)
+        _investment1 = create(:budget_investment)
         investment2 = create(:budget_investment)
         investment3 = create(:budget_investment, valuation_finished: true)
 
@@ -430,7 +430,7 @@ describe Budget::Investment do
 
     describe "valuation_finished" do
       it "returns all investments with valuation finished" do
-        investment1 = create(:budget_investment)
+        _investment1 = create(:budget_investment)
         investment2 = create(:budget_investment)
         investment3 = create(:budget_investment, valuation_finished: true)
 
@@ -464,7 +464,7 @@ describe Budget::Investment do
 
     describe "not_unfeasible" do
       it "returns all feasible and undecided investments" do
-        unfeasible_investment = create(:budget_investment, :unfeasible)
+        _unfeasible_investment = create(:budget_investment, :unfeasible)
         undecided_investment = create(:budget_investment, :undecided)
         feasible_investment = create(:budget_investment, :feasible)
 
@@ -474,9 +474,9 @@ describe Budget::Investment do
 
     describe "undecided" do
       it "returns all undecided investments" do
-        unfeasible_investment = create(:budget_investment, :unfeasible)
+        _unfeasible_investment = create(:budget_investment, :unfeasible)
         undecided_investment = create(:budget_investment, :undecided)
-        feasible_investment = create(:budget_investment, :feasible)
+        _feasible_investment = create(:budget_investment, :feasible)
 
         expect(described_class.undecided).to eq [undecided_investment]
       end
@@ -485,7 +485,7 @@ describe Budget::Investment do
     describe "selected" do
       it "returns all selected investments" do
         selected_investment = create(:budget_investment, :selected)
-        unselected_investment = create(:budget_investment, :unselected)
+        _unselected_investment = create(:budget_investment, :unselected)
 
         expect(described_class.selected).to eq [selected_investment]
       end
@@ -493,8 +493,8 @@ describe Budget::Investment do
 
     describe "unselected" do
       it "returns all unselected not_unfeasible investments" do
-        selected_investment = create(:budget_investment, :selected)
-        unselected_unfeasible_investment = create(:budget_investment, :unselected, :unfeasible)
+        _selected_investment = create(:budget_investment, :selected)
+        _unselected_unfeasible_investment = create(:budget_investment, :unselected, :unfeasible)
         unselected_undecided_investment = create(:budget_investment, :unselected, :undecided)
         unselected_feasible_investment = create(:budget_investment, :unselected, :feasible)
 
@@ -725,7 +725,7 @@ describe Budget::Investment do
       it "allows votes in a group with multiple headings after voting in group with a single heading" do
         districts = create(:budget_group, budget: budget)
         carabanchel = create(:budget_heading, group: districts)
-        salamanca   = create(:budget_heading, group: districts)
+        _salamanca   = create(:budget_heading, group: districts)
 
         all_city_investment    = create(:budget_investment, heading: heading)
         carabanchel_investment = create(:budget_investment, heading: carabanchel)
@@ -1029,12 +1029,12 @@ describe Budget::Investment do
         investment.heading = heading2
         investment.store_reclassified_votes("heading_changed")
 
-        reclassified_vote = Budget::ReclassifiedVote.first
-
         expect(Budget::ReclassifiedVote.count).to eq(3)
-        expect(reclassified_vote.investment_id).to eq(investment.id)
-        expect(reclassified_vote.user_id).to eq(Budget::Ballot.first.user.id)
-        expect(reclassified_vote.reason).to eq("heading_changed")
+        Budget::ReclassifiedVote.find_each do |reclassified_vote|
+          expect(reclassified_vote.investment_id).to eq(investment.id)
+          expect(reclassified_vote.reason).to eq("heading_changed")
+          expect(Budget::Ballot.find_by(user_id: reclassified_vote.user_id)).not_to be_nil
+        end
       end
     end
 
