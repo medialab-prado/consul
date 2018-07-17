@@ -54,6 +54,16 @@ module Abilities
       cannot :block, User, id: user.id
 
       can :manage, AdministratorTask
+      can :hide, ProposalNotification, hidden_at: nil
+      cannot :hide, ProposalNotification, author_id: user.id
+
+      can :ignore_flag, ProposalNotification, ignored_at: nil, hidden_at: nil
+      cannot :ignore_flag, ProposalNotification, author_id: user.id
+
+      can :moderate, ProposalNotification
+      cannot :moderate, ProposalNotification, author_id: user.id
+
+      can :index, ProposalNotification
     end
   end
 end

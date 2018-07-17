@@ -27,6 +27,10 @@ $sidebar-active: #f4fcd0;
     font-weight: 100;
     margin-bottom: $line-height;
 
+    small {
+      color: $text-medium;
+    }
+
     &.title {
       text-transform: uppercase;
     }
@@ -56,6 +60,41 @@ $sidebar-active: #f4fcd0;
 
     @include breakpoint(medium) {
       box-shadow: 0 2px 2px #eee;
+    }
+
+    @include breakpoint(small only) {
+
+      .top-bar-left ul {
+        display: inline-block;
+      }
+
+      .top-bar-right {
+
+        .submenu {
+          border: 0;
+          display: block;
+          margin-top: 0;
+          position: initial;
+          width: 100%;
+        }
+
+        .is-active {
+          font-weight: normal;
+          text-decoration: none;
+        }
+
+        .is-submenu-item {
+          padding: $line-height / 2 0;
+        }
+
+        a {
+          font-weight: normal !important;
+        }
+      }
+
+      [class^="icon-"] {
+        display: none;
+      }
     }
 
     [class^="icon-"]:not(.icon-circle) {
@@ -527,7 +566,7 @@ $sidebar-active: #f4fcd0;
 
 .account-info,
 .login-as {
-  background-color: #e7e7e7;
+  background-color: $highlight;
   border-radius: rem-calc(3);
   font-size: rem-calc(16);
   font-weight: normal;
@@ -599,6 +638,7 @@ $sidebar-active: #f4fcd0;
 .admin-content .select-heading {
 
   a {
+    color: $text;
     display: block;
 
     &.is-active {
@@ -632,6 +672,10 @@ $sidebar-active: #f4fcd0;
       background: #e0e0e0;
     }
   }
+}
+
+.management-list {
+  max-width: rem-calc(1200);
 }
 
 // 06. Polls
